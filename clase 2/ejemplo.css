@@ -1,0 +1,54 @@
+/* Selector universal, se aplica a todas las etiquetas */
+/* 
+{*} { 
+    Ideal para propiedades no heredables que quiero que se apliquen a todas las etiquetas 
+    color: yellowgreen;
+}
+*/
+/* Selector de etiqueta
+    selecciona todas las etiquetas del mismo tipo 
+    y les aplica los mismos estilos
+*/
+body {
+    /* color de fondo  */
+    background-color: #ffdab9;
+    /* familia de fuente o categoria de fuente*/
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    color: rebeccapurple;
+}
+
+p {
+    /* El font family es heredado del padre (body) pero si no me gusta puedo pisarlo con un font-family diferente */
+    font-family: Arial, Helvetica, sans-serif;
+    /* El estandar es 16px en pc | 14px en movil | 12px en tablet */
+    font-size: 40px;
+    /* font-weight significa grosor de la fuente, el valor normal es 400 y bold es 700 */
+    font-weight: 800;
+    /* formato de colores:
+        - X11 (ingles)
+        - RGB en decimal (rgb()) o hexadecimal (#)
+        - HSL (hue, saturation, lightness)
+    */
+}
+/* Selector de clase 
+    Tengo que llamarlo en el html con el atributo class
+    Siempre empieza con un .
+*/
+/*
+    Especificidad:
+    - las clases tienen más prioridad que los selectores de etiqueta
+    - los ID tienen más prioridad que las clases
+        no podemos tener  dos ID iguales en un mismo HTML
+*/
+.blanco {
+    /* Nada le gana a un importat
+    Excepto... otro important */
+    color: blue !important;
+}
+
+/* Selector de ID */
+/* Ideal no usar ID para estilos, es mejor usar clases */
+#voldemort {
+    background-color: black;
+    color: white;
+}

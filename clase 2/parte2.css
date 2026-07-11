@@ -1,0 +1,23 @@
+body {
+    background-color: #ffdab9;
+}
+
+h1 {
+    width: 50%;
+    height: 100px;
+    background-color: #cb6811;
+    font-size: 1em;
+}
+/* los pixeles son unidades absolutas
+    % es una unidad relativa
+    em es una unidad relativa 
+        1em = la unidad basica del navegador
+            desktop = 16px
+            mobile = 14px
+        CUIDADO: el em varia dependiendo si el elemento tiene padre o no en el HTML
+    Rem es una unidad relativa
+        1rem = la unidad basica del navegador
+            desktop = 16px
+            mobile = 14px
+            Al rem no le importa el lugar del elemento en el HTML
+*/
