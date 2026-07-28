@@ -45,7 +45,6 @@ p {
     Excepto... otro important */
     color: blue !important;
 }
-
 /* Selector de ID */
 /* Ideal no usar ID para estilos, es mejor usar clases */
 #voldemort {

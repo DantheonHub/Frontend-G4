@@ -1,0 +1,72 @@
+/*
+RESET BÁSICO
+
+box-sizing: border-box hace que width y height
+incluyan el padding y el border.
+
+margin: 0 elimina los márgenes de todos
+los elementos seleccionados.
+*/
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+
+/* Tamaño general del texto */
+
+body {
+  font-size: 25px;
+}
+
+
+/* Ejemplo de box-sizing */
+
+.element {
+  width: 250px;
+  height: 250px;
+  padding: 30px;
+  margin: 0 auto;
+
+  border: 30px solid blue;
+  background-color: teal;
+}
+
+
+/* Elemento de bloque */
+
+.block {
+  display: block;
+
+  margin-bottom: 30px;
+
+  background-color: teal;
+  color: white;
+}
+
+
+/* Elemento en línea */
+
+.inline {
+  display: inline;
+
+  background-color: purple;
+  color: white;
+}
+
+
+/* Elemento en línea con propiedades de bloque */
+
+.button {
+  display: inline-block;
+
+  padding: 15px 30px;
+
+  border-radius: 30px;
+  background-color: brown;
+  color: azure;
+
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+}

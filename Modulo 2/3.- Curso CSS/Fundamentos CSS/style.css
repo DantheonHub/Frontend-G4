@@ -1,0 +1,70 @@
+.caja {
+  /* Apariencia general */
+  background-color: #672b2b;
+  color: white;
+
+  /* Texto */
+  font-size: 20px;
+  font-family: Arial;
+
+  /* Tamaño de la caja */
+  width: 200px;
+  height: 200px;
+
+  /* Espacio interno de los cuatro lados */
+  padding: 20px;
+
+  /*
+    Borde:
+    grosor, estilo y color.
+  */
+  border: 20px solid blue;
+}
+
+/*
+  margin: auto | distribuye automáticamente el espacio disponible.
+
+  Por ejemplo:
+  margin-right: auto | desplaza el elemento hacia la izquierda,
+  utilizando todo el espacio disponible del lado derecho.
+
+  Para centrar horizontalmente un elemento con margin: auto,
+  normalmente debe tener un ancho definido.
+
+  Los elementos div tienen display: block por defecto.
+*/
+.caja1 {
+  width: 200px;
+
+  /* Shorthand para aplicar margin automático a los cuatro lados */
+  margin: auto;
+
+  /*
+    Propiedades individuales de margin:
+    margin-top
+    margin-right
+    margin-bottom
+    margin-left
+  */
+}
+
+/*
+  Colapso de márgenes:
+
+  Cuando dos márgenes verticales se encuentran, normalmente no se suman.
+  En su lugar, prevalece el margen de mayor tamaño.
+
+  Este comportamiento ocurre principalmente entre márgenes verticales,
+  como margin-top y margin-bottom.
+*/
+.main {
+  background-color: blue;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.footer {
+  background-color: #672b2b;
+  color: white;
+  margin-top: 50px;
+}
