@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: 90%;
+    height: 500px;
+    margin: 80px auto;
+
+    border: 2px solid darkgray;
+}
+
+.position {
+    width: 150px;
+    height: 100px;
+
+    color: aliceblue;
+    font-size: 1.3rem;
+    line-height: 100px;
+    text-align: center;
+}
+
+.static {
+    background-color: darkblue;
+
+    /* Valor predeterminado. Mantiene el elemento en el flujo normal. */
+    position: static;
+}
+
+.relative {
+    background-color: tomato;
+
+    /* Se mueve desde su posición original y conserva su espacio. */
+    position: relative;
+    left: 30px;
+}
+
+.absolute {
+    background-color: purple;
+
+    /*
+    Sale del flujo normal y toma como referencia
+    el ancestro posicionado más cercano.
+    */
+    position: absolute;
+    right: 30px;
+}
+
+.fixed {
+    background-color: cadetblue;
+
+    /* Permanece fijo respecto del viewport al hacer scroll. */
+    position: fixed;
+}
+
+.sticky {
+    width: 140px;
+    height: 140px;
+
+    background-color: slateblue;
+
+    /* Se fija cuando alcanza 30px desde la parte superior. */
+    position: sticky;
+    top: 30px;
+}
+
+/*
+z-index controla qué elemento aparece encima cuando se superponen.
+Un valor mayor suele colocarse sobre uno menor.
+*/

@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    padding: 30px;
+
+    background-color: blueviolet;
+    color: azure;
+
+    /*
+    Unidades relativas al viewport:
+
+    vw → porcentaje del ancho visible del navegador.
+    30vw ocupa el 30% del ancho del viewport.
+
+    vh → porcentaje del alto visible del navegador.
+    50vh ocupa el 50% del alto del viewport.
+
+    Ejemplos:
+
+    width: 30vw;
+    height: 50vh;
+    */
+
+    /*
+    Los porcentajes dependen normalmente del tamaño
+    del elemento contenedor.
+
+    width: 50%;
+
+    El elemento ocupará la mitad del ancho disponible
+    de su padre.
+    */
+}
+
+.title {
+    margin-bottom: 20px;
+    border: 1px solid white;
+}
+
+/*
+UNIDADES DE MEDIDA
+
+Absolutas:
+px, cm, mm, pt.
+
+Relativas:
+%, em, rem, vw, vh.
+
+rem es relativo al font-size del elemento html.
+
+1rem equivale al tamaño de fuente definido en html.
+Si html tiene 16px, entonces:
+
+1rem   = 16px
+1.5rem = 24px
+2rem   = 32px
+
+em es relativo al tamaño de fuente del elemento
+o al tamaño heredado de su padre, según la propiedad.
+*/
+
+.primero {
+    font-size: 1.5rem; 
+}
+
+.segundo, .tercero {
+    font-size: 24px; 
+}
+
+.cuarto {
+    /*
+    Si el tamaño de fuente heredado es 16px:
+    font-size: 2em;
+    16px × 2 = 32px
+    */
+    font-size: 2em; 
+
+    /*
+    Después de establecer font-size: 2em,
+    el tamaño de fuente del elemento es 32px.
+
+    El padding expresado en em se calcula usando
+    ese tamaño de fuente:
+
+    padding: 2em 0;
+
+    32px × 2 = 64px de padding vertical.
+    */
+
+    /* padding: 2em 0; */
+}
+
+/*
+El viewport es el área visible de la página
+dentro del navegador.
+*/
+

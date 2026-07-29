@@ -1,0 +1,219 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+.title{
+    margin: 70px;
+    color: darkslateblue;
+    color: rgb(242, 102, 222);
+    color: #ff0000;
+    color: hsl(200, 100%, 50%);
+}
+.background{
+    height: 600px;
+    /* margin: 50px; */
+    background-color: blanchedalmond;
+    /*background-image: url(images/pangolin.png);
+    background-size: 100px;
+    background-repeat: no-repeat;
+    */
+    background-image: linear-gradient(rgba(52, 23, 7, 0.3), rgba(62, 24, 0, 0.3)), url("images/pangolin.png"); /*debe ser opaco el rgb para que se vea la img */
+    background-size: cover;
+    background-position: center;
+    padding: .1px;
+}
+
+h2{
+    margin-top: 50px;
+    color: white;
+    font-size: 50px;
+    text-align: center;
+}
+
+/*
+COLORES HEXADECIMALES
+
+Los colores hexadecimales suelen escribirse con seis caracteres:
+
+#RRGGBB
+
+┌────┬────┬────┐
+│ RR │ GG │ BB │
+├────┼────┼────┤
+│Red │Green│Blue│
+│Rojo│Verde│Azul│
+└────┴────┴────┘
+
+Ejemplos:
+
+#ff0000 → rojo
+#00ff00 → verde
+#0000ff → azul
+#ffffff → blanco
+#000000 → negro
+*/
+
+
+/*
+HSL
+
+HSL significa:
+
+Hue        → tono
+Saturation → saturación
+Lightness  → luminosidad
+
+Ejemplo:
+
+hsl(200, 100%, 50%)
+
+200  → posición dentro del círculo cromático
+100% → saturación
+50%  → luminosidad
+
+SATURACIÓN
+
+0%   → gris
+100% → color intenso
+
+LUMINOSIDAD
+
+0%   → negro
+50%  → color normal
+100% → blanco
+
+También puede agregarse transparencia mediante
+un valor alfa entre 0 y 1.
+
+0   → transparente
+0.5 → semitransparente
+1   → opaco
+*/
+
+
+/*
+RGB
+
+RGB significa:
+
+Red   → rojo
+Green → verde
+Blue  → azul
+
+Cada canal utiliza valores entre 0 y 255.
+
+Ejemplo:
+
+rgb(255, 0, 0) → rojo
+
+También puede agregarse transparencia:
+
+rgba(255, 0, 0, 0.5)
+
+El cuarto valor controla la opacidad:
+
+0   → transparente
+0.5 → semitransparente
+1   → opaco
+*/
+
+
+/*
+FORMATOS DE IMAGEN
+
+SVG
+
+Es un formato vectorial.
+Puede ampliarse sin perder definición.
+
+Es adecuado para:
+
+- logotipos
+- iconos
+- ilustraciones simples
+
+
+JPG Y PNG
+
+Son formatos formados por píxeles.
+Pueden perder nitidez cuando se muestran
+con un tamaño superior a su resolución original.
+
+Reducir una imagen no suele provocar la misma
+pérdida visible que ampliarla demasiado.
+*/
+
+
+/*
+BACKGROUND-POSITION
+
+Define la posición de una imagen de fondo.
+
+La posición inicial es la esquina superior izquierda:
+
+background-position: 0% 0%;
+
+Valores frecuentes:
+
+top
+right
+bottom
+left
+center
+
+También pueden combinarse:
+
+background-position: top left;
+background-position: bottom right;
+background-position: center;
+
+El primer valor representa normalmente
+la posición horizontal.
+
+El segundo representa la posición vertical.
+
+También pueden utilizarse medidas:
+
+background-position: 20px 40px;
+
+20px → posición horizontal
+40px → posición vertical
+*/
+
+
+/*
+BACKGROUND-SIZE
+
+Define el tamaño de una imagen de fondo.
+
+Tamaño específico:
+
+background-size: 100px;
+
+CONTAIN
+
+background-size: contain;
+
+Ajusta la imagen para mostrarla completa
+dentro del elemento.
+
+Puede dejar espacios sin cubrir.
+
+
+COVER
+
+background-size: cover;
+
+Ajusta la imagen para cubrir todo el elemento.
+
+Mantiene sus proporciones, pero puede recortar
+parte de la imagen.
+
+┌──────────────────┬──────────────────┐
+│     contain      │      cover       │
+├──────────────────┼──────────────────┤
+│ Imagen completa  │ Fondo completo   │
+│ Puede dejar      │ Puede recortar   │
+│ espacios libres  │ parte de imagen  │
+└──────────────────┴──────────────────┘
+*/

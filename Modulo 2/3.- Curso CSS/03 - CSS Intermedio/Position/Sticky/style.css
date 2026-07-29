@@ -1,0 +1,17 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 300vh;
+}
+
+.sticky{
+    width: 140px;
+    height: 140px;
+    background-color: slateblue;
+    position: sticky;
+    top: 30px;
+}
+/*Sticky es una propiedad combinada, se pega y luego se vuelve relative. permite fijar un elemenoto, puede usar top y bottom 
+se va a pegar si cuando llega a cierta medida, sino no.  */

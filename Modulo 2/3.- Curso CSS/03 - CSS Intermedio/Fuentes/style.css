@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Cabin es la fuente principal; Arial funciona como respaldo. */
+    font-family: "Cabin", Arial, sans-serif;
+}
+
+.background {
+    height: 600px;
+
+    /*
+    Evita que el margin-top del primer elemento
+    colapse con el contenedor.
+    */
+    padding: 0.1px;
+
+    background-color: blanchedalmond;
+
+    /*
+    El degradado semitransparente se coloca
+    delante de la imagen de fondo.
+    */
+    background-image:
+        linear-gradient(
+            rgba(52, 23, 7, 0.3),
+            rgba(62, 24, 0, 0.3)
+        ),
+        url("images/pangolin.png");
+
+    /*
+    cover cubre todo el contenedor y puede
+    recortar parte de la imagen.
+    */
+    background-size: cover;
+    background-position: center;
+}
+
+.background h2 {
+    margin-top: 50px;
+
+    color: white;
+    font-size: 50px;
+    text-align: center;
+}
+
+.card {
+    width: 80%;
+    max-width: 500px;
+
+    margin: 80px auto 0;
+    padding: 40px 20px;
+
+    background-color: rgb(47, 26, 1);
+    color: white;
+}
+
+.img {
+    width: 200px;
+
+    /*
+    La imagen se convierte en bloque para poder
+    centrarla con márgenes automáticos.
+    */
+    display: block;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 30px;
+
+    /* Controla el espacio vertical entre líneas. */
+    line-height: 1.2;
+
+    /*
+    Divide palabras muy largas si superan
+    el ancho disponible.
+    */
+    overflow-wrap: break-word;
+
+    text-align: start;
+
+    /*
+    Propiedades utilizadas durante la práctica:
+
+    letter-spacing: 20px;
+    word-spacing: -4px;
+    hyphens: auto;
+    width: 150px;
+    */
+}
+
+.paragraph {
+    /* Convierte visualmente el texto a mayúsculas. */
+    text-transform: uppercase;
+}
+
+.paragraph--first {
+    /* Aplica un mayor grosor al texto. */
+    font-weight: bold;
+}
