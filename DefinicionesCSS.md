@@ -1,6 +1,6 @@
 # Biblioteca de conceptos CSS
 
-Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos de CSS estudiados. Los temas están organizados desde los fundamentos hasta propiedades de texto, unidades, fondos y posicionamiento.
+Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos de CSS estudiados. Los temas están organizados desde los fundamentos hasta propiedades de texto, unidades, fondos, posicionamiento y flexbox.
 
 ## Índice
 
@@ -14,6 +14,7 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Ancho y alto](#ancho-y-alto)
 * [Padding](#padding)
 * [Bordes](#bordes)
+* [Sombras](#sombras)
 * [Margin](#margin)
 * [Centrado con `margin: auto`](#centrado-con-margin-auto)
 * [Colapso de márgenes](#colapso-de-márgenes)
@@ -21,12 +22,21 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Tipos de caja](#tipos-de-caja)
 * [Fondos](#fondos)
 * [Posicionamiento en CSS](#posicionamiento-en-css)
+* [Flexbox](#flexbox)
+* [Variables CSS (Custom Properties)](#variables-css-custom-properties)
+* [Grid](#grid)
+* [Media Queries](#media-queries)
 * [Sobrescritura de propiedades](#sobrescritura-de-propiedades)
 * [Selector universal y reset](#selector-universal-y-reset)
 * [Ejemplo práctico: modelo de caja y tipos de caja](#ejemplo-práctico-modelo-de-caja-y-tipos-de-caja)
 * [Ejemplo práctico: colores y fondos](#ejemplo-práctico-colores-y-fondos)
 * [Ejemplo práctico: unidades de medida](#ejemplo-práctico-unidades-de-medida)
 * [Ejemplo práctico: posicionamiento](#ejemplo-práctico-posicionamiento)
+* [Ejemplo práctico: card (bordes y sombras)](#ejemplo-práctico-card-bordes-y-sombras)
+* [Ejemplo práctico: flexbox](#ejemplo-práctico-flexbox)
+* [Ejemplo práctico: variables CSS](#ejemplo-práctico-variables-css)
+* [Ejemplo práctico: grid](#ejemplo-práctico-grid)
+* [Ejemplo práctico: media queries](#ejemplo-práctico-media-queries)
 
 ---
 
@@ -895,6 +905,7 @@ Ocupa la mitad del ancho visible del navegador.
 ```
 
 Ocupa la mitad del alto visible del navegador.
+
 # Modelo de caja
 
 Cada elemento HTML se representa como una caja rectangular.
@@ -1131,6 +1142,107 @@ El orden recomendado es:
 ```text
 grosor → estilo → color
 ```
+
+## `border-radius`
+
+Redondea las esquinas de un elemento.
+
+```css
+border-radius: 1em;
+```
+
+También puede definirse esquina por esquina. El orden es: superior-izquierda, superior-derecha, inferior-derecha, inferior-izquierda.
+
+```css
+border-radius: 1em 1em 0 0;
+```
+
+Ejemplo: redondear solo las esquinas superiores (útil para la imagen de una tarjeta que va pegada a un contenedor con esquinas inferiores redondeadas):
+
+```text
+ ╭───────────────╮
+ │                │
+ │                │
+ └───────────────┘
+```
+
+```css
+.card-img {
+    border-radius: 1em 1em 0 0;
+}
+
+.card-container {
+    border-radius: 0 0 1em 1em;
+}
+```
+
+De esta forma, la imagen y el contenedor de texto de una misma tarjeta se combinan visualmente como si fueran una sola caja con las cuatro esquinas redondeadas.
+
+## `outline`
+
+`outline` dibuja un contorno alrededor de un elemento, de forma similar a `border`.
+
+```css
+outline: 3px solid black;
+```
+
+La diferencia principal es que `outline` **no forma parte del modelo de caja**: no ocupa espacio ni afecta el tamaño ni la posición del elemento ni de sus vecinos.
+
+```text
+border  → forma parte del box model, ocupa espacio dentro de la caja
+outline → no forma parte del box model, se dibuja "por fuera", sin desplazar nada
+```
+
+---
+
+# Sombras
+
+## `box-shadow`
+
+Aplica una o varias sombras alrededor de la caja de un elemento.
+
+```css
+box-shadow: 0 0 3px;
+```
+
+Sintaxis general (valores más comunes):
+
+```text
+box-shadow: offset-x offset-y blur-radius color;
+```
+
+```text
+offset-x    → desplazamiento horizontal de la sombra
+offset-y    → desplazamiento vertical de la sombra
+blur-radius → qué tan difuminada se ve (a mayor valor, más difusa)
+color       → color de la sombra (opcional; si se omite, suele usar el color del texto)
+```
+
+Ejemplo:
+
+```css
+.card {
+    box-shadow: 0 0 3px;
+}
+```
+
+```text
+0 0 3px
+offset-x: 0      → sin desplazamiento horizontal
+offset-y: 0      → sin desplazamiento vertical
+blur-radius: 3px → sombra difuminada de 3px alrededor de toda la caja
+```
+
+```text
+┌───────────────────┐
+│                    │
+│      Contenido     │
+│                    │
+└───────────────────┘
+  ░░░░░░░░░░░░░░░░░░░   ← sombra difuminada alrededor de la caja
+```
+
+Es una propiedad útil para dar sensación de profundidad, sin necesidad de agregar un borde visible.
 
 ---
 
@@ -1757,6 +1869,7 @@ Es adecuado para:
 * iconos;
 * ilustraciones simples;
 * figuras geométricas.
+
 # Posicionamiento en CSS
 
 La propiedad `position` define cómo se ubica un elemento dentro de la página.
@@ -2017,12 +2130,12 @@ Su funcionamiento depende del espacio disponible y del contenedor al que pertene
 ## Comparación
 
 | Valor      | Ocupa su espacio original | Referencia principal         | Sigue el desplazamiento |
-| ---------- | ------------------------: | ---------------------------- | ----------------------: |
-| `static`   |                        Sí | Flujo normal                 |                      Sí |
-| `relative` |                        Sí | Su posición original         |                      Sí |
-| `absolute` |                        No | Ancestro posicionado         |                      Sí |
-| `fixed`    |                        No | Viewport                     |                      No |
-| `sticky`   |                        Sí | Contenedor y límite indicado |            Parcialmente |
+| ---------- | ------------------------: | ----------------------------- | ----------------------: |
+| `static`   |                        Sí | Flujo normal                  |                      Sí |
+| `relative` |                        Sí | Su posición original          |                      Sí |
+| `absolute` |                        No | Ancestro posicionado          |                      Sí |
+| `fixed`    |                        No | Viewport                      |                      No |
+| `sticky`   |                        Sí | Contenedor y límite indicado  |            Parcialmente |
 
 ## `z-index`
 
@@ -2069,6 +2182,588 @@ position: sticky;
 ```
 
 Un valor alto no garantiza que un elemento aparezca por encima de toda la página, porque también depende del contexto de apilamiento de sus elementos padres.
+
+---
+
+# Flexbox
+
+Flexbox es un modelo de diseño (`display: flex`) pensado para distribuir elementos dentro de un contenedor de forma flexible y adaptable a distintos tamaños de pantalla.
+
+Surge principalmente para facilitar la maquetación responsiva, en especial en dispositivos móviles: al aplicar `display: flex`, los elementos hijos pasan a acomodarse uno al lado del otro de forma flexible, en vez de apilarse como cajas de bloque.
+
+## Activar flexbox
+
+```css
+.container {
+    display: flex;
+}
+```
+
+Al aplicar `display: flex` a un contenedor, todos sus hijos directos (llamados **flex items**) se acomodan automáticamente en una fila, uno al lado del otro.
+
+## Ejes de flexbox
+
+Flexbox trabaja siempre con dos ejes:
+
+```text
+main axis  → eje principal
+cross axis → eje secundario, perpendicular al principal
+```
+
+Por defecto (con `flex-direction: row`):
+
+```text
+main axis  → va de izquierda a derecha
+cross axis → va de arriba hacia abajo
+```
+
+```text
+                main axis ─────────────────────►
+              ┌───────────────────────────────────┐
+              │ ┌────┐   ┌────┐   ┌────┐           │
+cross axis    │ │ 1  │   │ 2  │   │ 3  │           │
+    │         │ └────┘   └────┘   └────┘           │
+    ▼         └───────────────────────────────────┘
+```
+
+## `flex-direction`
+
+Define la dirección del main axis.
+
+```css
+flex-direction: row;
+```
+
+Valores:
+
+```text
+row            → izquierda a derecha (por defecto)
+row-reverse    → derecha a izquierda
+column         → arriba hacia abajo
+column-reverse → abajo hacia arriba
+```
+
+Cuando `flex-direction` es `column` o `column-reverse`, los ejes se invierten: el main axis pasa a ser vertical y el cross axis horizontal.
+
+```text
+row (por defecto)             column
+main axis ───────►            main axis
+┌───┐ ┌───┐ ┌───┐              │
+│ 1 │ │ 2 │ │ 3 │              ▼
+└───┘ └───┘ └───┘             ┌───┐
+                               │ 1 │
+                               ├───┤
+                               │ 2 │
+                               ├───┤
+                               │ 3 │
+                               └───┘
+```
+
+## `flex-wrap`
+
+Define si los elementos deben mantenerse en una sola línea o pueden pasar a otra cuando no caben en el contenedor.
+
+```css
+flex-wrap: wrap;
+```
+
+Valores:
+
+```text
+nowrap       → todos los elementos permanecen en una sola línea (por defecto)
+wrap         → los elementos pasan a nuevas líneas cuando no caben
+wrap-reverse → igual que wrap, pero las líneas se acomodan en orden inverso
+```
+
+Sin `flex-wrap: wrap`, los elementos se encogen o desbordan el contenedor para mantenerse en una sola línea.
+
+```text
+nowrap                              wrap
+┌───────────────────────┐           ┌───────────────────────┐
+│┌──┐┌──┐┌──┐┌──┐┌──┐┌──┐│           │┌──┐┌──┐┌──┐┌──┐       │
+││1 ││2 ││3 ││4 ││5 ││6 ││           ││1 ││2 ││3 ││4 │       │
+│└──┘└──┘└──┘└──┘└──┘└──┘│           │└──┘└──┘└──┘└──┘       │
+└───────────────────────┘           │┌──┐┌──┐               │
+(se encogen para entrar)            ││5 ││6 │               │
+                                     │└──┘└──┘               │
+                                     └───────────────────────┘
+                                     (pasan a una nueva línea)
+```
+
+## `justify-content`
+
+Alinea los elementos a lo largo del **main axis**.
+
+```css
+justify-content: center;
+```
+
+Valores frecuentes:
+
+```text
+flex-start    → agrupa los elementos al inicio del main axis (por defecto)
+flex-end      → agrupa los elementos al final del main axis
+center        → agrupa los elementos al centro
+space-between → reparte el espacio sobrante entre los elementos, sin espacio en los extremos
+space-around  → reparte el espacio sobrante alrededor de cada elemento
+space-evenly  → reparte el espacio sobrante de forma equitativa en todos los lados
+```
+
+```text
+flex-start:     [1][2][3]
+
+center:              [1][2][3]
+
+flex-end:                 [1][2][3]
+
+space-between:  [1]      [2]      [3]
+
+space-evenly:      [1]    [2]    [3]
+```
+
+## `align-items`
+
+Alinea los elementos a lo largo del **cross axis**, dentro de una misma línea.
+
+```css
+align-items: center;
+```
+
+Valores frecuentes:
+
+```text
+stretch    → estira los elementos para ocupar todo el cross axis (valor por defecto)
+flex-start → los alinea al inicio del cross axis
+flex-end   → los alinea al final del cross axis
+center     → los alinea al centro del cross axis
+baseline   → los alinea según la línea base del texto
+```
+
+## `align-content`
+
+Alinea las **líneas** de elementos a lo largo del cross axis, cuando hay más de una línea. Requiere `flex-wrap: wrap` (sin líneas múltiples, no tiene efecto).
+
+```css
+align-content: space-between;
+```
+
+Es equivalente a `justify-content`, pero aplicado al cross axis y agrupando líneas completas en vez de elementos individuales.
+
+Valores frecuentes:
+
+```text
+flex-start   → agrupa las líneas al inicio
+flex-end     → agrupa las líneas al final
+center       → agrupa las líneas al centro
+stretch      → estira las líneas para ocupar el espacio disponible (sin valor por defecto fijo)
+space-around → da espacio alrededor de cada línea (el espacio entre líneas se suma)
+space-evenly → da espacio equitativo entre todas las líneas
+```
+
+## Propiedades de los flex items
+
+Las siguientes propiedades se aplican a los **hijos** de un contenedor flex, no al contenedor.
+
+### `flex-grow`
+
+Define cuánto puede **crecer** un elemento para ocupar el espacio sobrante del contenedor.
+
+```css
+flex-grow: 2;
+```
+
+El valor por defecto es `0` (los elementos no crecen). Cuando varios elementos declaran `flex-grow`, el espacio sobrante se reparte proporcionalmente entre ellos según su valor.
+
+### `flex-shrink`
+
+Define cuánto puede **encogerse** un elemento cuando falta espacio en el contenedor.
+
+```css
+flex-shrink: 1;
+```
+
+Funciona de forma similar a `flex-grow`, pero en sentido contrario: en vez de repartir el espacio sobrante, reparte el espacio faltante entre los elementos. Gracias a `flex-grow` y `flex-shrink` los elementos son "flexibles".
+
+### `flex-basis`
+
+Define el tamaño base de un elemento en el main axis, antes de aplicar `flex-grow` o `flex-shrink`.
+
+```css
+flex-basis: auto;
+```
+
+Su comportamiento depende de `flex-direction`: si el main axis es horizontal (`row`), se comporta como un `width`; si es vertical (`column`), se comporta como un `height`.
+
+`flex-grow`, `flex-shrink` y `flex-basis` suelen combinarse mediante el shorthand `flex`:
+
+```css
+flex: 1 1 auto;
+```
+
+```text
+flex-grow: 1
+flex-shrink: 1
+flex-basis: auto
+```
+
+### `order`
+
+Define el orden en el que aparece un elemento dentro del contenedor, sin modificar el HTML.
+
+```css
+.elemento {
+    order: 1;
+}
+```
+
+Por defecto, todos los elementos tienen `order: 0` y se acomodan en el orden en que aparecen en el HTML. Los elementos se ordenan de menor a mayor según su valor de `order`.
+
+### `align-self`
+
+Sobrescribe el valor de `align-items` para un elemento en particular.
+
+```css
+.elemento {
+    align-self: center;
+}
+```
+
+Alinea el elemento a través del cross axis, igual que `align-items`, pero se aplica únicamente al elemento donde se declara. Acepta los mismos valores (`stretch`, `flex-start`, `flex-end`, `center`, `baseline`).
+
+## Comparación de propiedades del contenedor
+
+| Propiedad         | Eje que afecta | Qué alinea                          |
+| ------------------ | --------------- | ------------------------------------ |
+| `justify-content`  | main axis        | elementos dentro de una línea        |
+| `align-items`      | cross axis       | elementos dentro de una línea        |
+| `align-content`    | cross axis       | líneas completas (requiere `wrap`)   |
+
+---
+
+# Variables CSS (Custom Properties)
+
+Las variables en CSS se llaman formalmente **custom properties** (propiedades personalizadas). Permiten guardar un valor y reutilizarlo en distintos lugares de una hoja de estilos.
+
+## Declarar una variable
+
+Se declaran con dos guiones al inicio del nombre (`--`), dentro de un selector.
+
+```css
+:root {
+    --border-colores: 1px solid green;
+    --color-principal: white;
+}
+```
+
+`:root` es una pseudoclase que representa el elemento raíz del documento (equivalente a `html`, pero con una especificidad de `10`).
+
+Declarar las variables ahí las hace disponibles para todo el documento, ya que todos los elementos son descendientes de `:root`.
+
+## Usar una variable
+
+Se utilizan mediante la función `var()`.
+
+```css
+.title {
+    border: var(--border-colores);
+}
+```
+
+## Valor alternativo (fallback)
+
+`var()` acepta un segundo argumento: un valor alternativo que se usa si la variable indicada no existe o no está definida.
+
+```css
+border: var(--border-colores, 2px solid green);
+```
+
+## Alcance de las variables
+
+Una variable puede declararse dentro de cualquier selector, no solo en `:root`.
+
+```css
+.card {
+    --border-colores: 1px solid red;
+}
+```
+
+Declararla dentro de un selector específico limita su alcance: solo estará disponible para ese elemento y sus elementos descendientes (hijos).
+
+```text
+:root     → alcance global, disponible en todo el documento
+.selector → alcance local, solo el elemento donde se declara y sus hijos
+```
+
+## Ventaja principal
+
+Permiten cambiar un valor (un color, un borde, un espaciado) en un único lugar, y que el cambio se refleje automáticamente en todos los sitios donde se usa la variable.
+
+---
+
+# Grid
+
+`display: grid` crea un sistema de maquetación **bidireccional**: a diferencia de flexbox, que ordena los elementos en una sola dirección a la vez (fila o columna), grid permite controlar filas y columnas al mismo tiempo.
+
+## Conceptos básicos
+
+```text
+grid line  → cada una de las líneas que forman la cuadrícula (de columna o de fila)
+grid track → el espacio entre dos líneas consecutivas (una columna o una fila)
+grid cell  → la intersección entre una fila y una columna
+grid area  → un grupo rectangular de una o más celdas
+```
+
+## Activar grid
+
+```css
+.container {
+    display: grid;
+}
+```
+
+## `grid-template-columns` y `grid-template-rows`
+
+Definen la cantidad y el tamaño de las columnas y filas.
+
+```css
+.container {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+```
+
+`repeat(veces, valor)` es una función que repite un valor una cantidad determinada de veces. En el ejemplo, crea 5 columnas (o 5 filas) iguales.
+
+### Unidad `fr`
+
+`fr` (fracción) reparte el espacio disponible del contenedor en partes iguales.
+
+```css
+grid-template-columns: 1fr 1fr 1fr;
+```
+
+```text
+Contenedor: 900px
+3 columnas de 1fr
+
+900px ÷ 3 = 300px cada columna
+```
+
+## `gap`
+
+Define el espacio entre filas y columnas.
+
+```css
+gap: 10px;
+```
+
+También puede controlarse por separado:
+
+```css
+column-gap: 20px;
+row-gap: 10px;
+```
+
+`gap` es similar a `margin`, pero no le resta tamaño a los elementos ni requiere ajustar `top` o `left` para compensar: actúa únicamente en los espacios internos entre celdas.
+
+## Columnas y filas adaptables sin media queries
+
+Combinar `repeat(auto-fit, ...)` con `minmax(min, max)` permite que la cantidad de columnas se ajuste automáticamente según el espacio disponible, sin necesidad de escribir media queries.
+
+```css
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+```
+
+```text
+auto-fit           → ajusta la cantidad de columnas al espacio disponible
+minmax(250px, 1fr) → cada columna mide al menos 250px, y como máximo
+                      reparte el espacio sobrante en partes iguales (1fr)
+```
+
+Como `fr` reparte el espacio en partes iguales, todas las columnas mantienen el mismo tamaño entre sí.
+
+## `grid-auto-rows`
+
+Define el tamaño de las filas que se generan automáticamente, cuando no fueron declaradas explícitamente con `grid-template-rows`.
+
+```css
+grid-auto-rows: auto;
+```
+
+## Ubicar elementos por líneas: `grid-column` y `grid-row`
+
+Cada línea de la cuadrícula tiene un número, empezando en `1`.
+
+```css
+.item1 {
+    grid-column: 1 / 4;
+    grid-row: 1 / 3;
+}
+```
+
+```text
+grid-column: 1 / 4
+→ empieza en la línea 1 de columna y termina en la línea 4
+  (ocupa las columnas 1, 2 y 3)
+
+grid-row: 1 / 3
+→ empieza en la línea 1 de fila y termina en la línea 3
+  (ocupa la fila 1 y la fila 2)
+```
+
+## Ubicar elementos con nombre: `grid-template-areas` y `grid-area`
+
+Otra forma de ubicar los elementos es nombrando áreas dentro del contenedor.
+
+```css
+.container {
+    grid-template-areas:
+        "nav nav nav nav nav"
+        "main main main side side"
+        "main main main side side"
+        "main main main side side"
+        "footer footer footer footer footer";
+}
+```
+
+Cada línea entre comillas representa una fila de la cuadrícula, y cada palabra representa la columna que ocupa esa celda. Repetir el mismo nombre en celdas contiguas hace que formen una sola área.
+
+Luego, en cada elemento se indica a qué área pertenece:
+
+```css
+.item1 {
+    grid-area: nav;
+}
+
+.item2 {
+    grid-area: main;
+}
+
+.item3 {
+    grid-area: footer;
+}
+
+.item4 {
+    grid-area: side;
+}
+```
+
+La cantidad de columnas y filas escritas en `grid-template-areas` debe coincidir con las definidas en `grid-template-columns` y `grid-template-rows`.
+
+Para dejar una celda vacía se usa un punto (`.`) en su lugar.
+
+Un `grid-area` debe formar siempre un rectángulo o un cuadrado; no puede tener forma irregular.
+
+### Diagrama de líneas y áreas
+
+Con 5 columnas y 5 filas, la cuadrícula tiene 6 líneas de columna y 6 líneas de fila (una línea más que la cantidad de columnas o filas, porque las líneas marcan los bordes de cada track).
+
+```text
+        1         2         3         4         5         6
+      1 ┌─────────┬─────────┬─────────┬─────────┬─────────┐
+        │                    nav                          │
+      2 ├─────────┬─────────┬─────────┼─────────┬─────────┤
+        │                   │                   │         │
+      3 │        main       │        side       │         │
+        │                   │                   │         │
+      4 │                   │                   │         │
+        │                   │                   │         │
+      5 ├─────────┬─────────┼─────────┴─────────┴─────────┤
+        │                   footer                        │
+      6 └─────────┴─────────┴─────────┴─────────┴─────────┘
+```
+
+```text
+nav    → grid-row: 1 / 2   | grid-column: 1 / 6
+main   → grid-row: 2 / 5   | grid-column: 1 / 4
+side   → grid-row: 2 / 5   | grid-column: 4 / 6
+footer → grid-row: 5 / 6   | grid-column: 1 / 6
+```
+
+Este resultado es el mismo que se logra con `grid-template-areas`, pero indicando la posición mediante números de línea en vez de nombres.
+
+## Comparación de las dos formas de ubicar elementos
+
+| Método                              | Ventaja                                                        |
+| ------------------------------------ | ---------------------------------------------------------------- |
+| `grid-column` / `grid-row`           | Útil para posiciones puntuales basadas en números de línea       |
+| `grid-template-areas` + `grid-area`  | Más visual y legible; el diseño se puede leer directamente en el CSS |
+
+---
+
+# Media Queries
+
+Los media queries permiten aplicar estilos distintos según las características del dispositivo, principalmente el ancho del viewport. Se usan para adaptar el diseño a distintos tamaños de pantalla: celulares, tablets, notebooks.
+
+## Sintaxis
+
+```css
+@media (condición) {
+    selector {
+        propiedad: valor;
+    }
+}
+```
+
+## `max-width` y `min-width`
+
+```css
+@media (max-width: 700px) {
+    .element {
+        background-color: aqua;
+    }
+}
+```
+
+```text
+max-width → el bloque se aplica mientras el viewport sea igual o menor a ese ancho
+min-width → el bloque se aplica mientras el viewport sea igual o mayor a ese ancho
+```
+
+## Orden de los media queries
+
+Por la cascada de CSS, ante una misma especificidad, el navegador aplica la última regla que coincide en el orden en que fue escrita. Por eso el orden de los media queries importa.
+
+```css
+.element {
+    background-color: moccasin;
+}
+
+@media (max-width: 700px) {
+    .element {
+        background-color: aqua;
+    }
+}
+
+@media (max-width: 500px) {
+    .element {
+        background-color: brown;
+    }
+}
+```
+
+```text
+Viewport > 700px  → moccasin (regla base, ningún media query aplica)
+Viewport ≤ 700px  → aqua (coincide el primer media query)
+Viewport ≤ 500px  → coinciden aqua y brown a la vez, pero se aplica brown
+                     por ser la última declaración en el código
+```
+
+Al trabajar con `max-width`, conviene escribir los media queries de mayor a menor ancho, para que el breakpoint más chico (más específico) quede al final y pueda sobrescribir a los anteriores.
+
+Por esta misma razón, los media queries suelen ubicarse al final del archivo CSS: así se aseguran de sobrescribir las reglas base que ya fueron declaradas más arriba.
+
+## No se limitan a una sola clase
+
+Un media query puede afectar a cualquier selector dentro de su bloque, no solo a la clase que se esté adaptando.
+
+```css
+@media (min-width: 500px) {
+    body {
+        background-color: antiquewhite;
+    }
+}
+```
 
 ---
 
@@ -2446,3 +3141,273 @@ body {
     top: 30px;
 }
 ```
+
+---
+
+# Ejemplo práctico: card (bordes y sombras)
+
+```css
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.card {
+    max-width: 350px;
+    margin: 80px auto;
+    box-shadow: 0 0 3px;
+    border-radius: 1em;
+}
+
+.card-img {
+    width: 100%;
+    display: block;
+    border-radius: 1em 1em 0 0;
+}
+
+.card-container {
+    color: white;
+    background-color: rgb(35, 0, 35);
+    border-radius: 0 0 1em 1em;
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.card-title {
+    margin-bottom: 15px;
+}
+
+.card-paragraph {
+    line-height: 1.5;
+    text-align: start;
+}
+
+.card-button {
+    display: inline-block;
+    background-color: rgb(151, 141, 0);
+    text-decoration: none;
+    color: white;
+    padding: 1em 2em;
+    margin-top: 1em;
+    border-radius: 2em;
+}
+```
+
+En este ejemplo se combinan conceptos ya vistos (`max-width`, `margin: auto`, `display: inline-block`, `line-height`, `text-align`) con dos propiedades nuevas:
+
+* `box-shadow: 0 0 3px` en `.card` da una sombra suave alrededor de toda la tarjeta, sin necesidad de un borde visible.
+* `border-radius` redondea las esquinas de `.card`, `.card-img` (solo arriba, para que la imagen quede pegada al contenedor de texto) y `.card-container` (solo abajo). En `.card-button`, un `border-radius` grande (`2em`) genera un botón con forma de píldora.
+
+---
+
+# Ejemplo práctico: flexbox
+
+```css
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.flex {
+    width: 90%;
+    max-width: 800px;
+    min-height: 600px;
+    margin: 80px auto;
+    border: 3px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    outline: 3px solid black;
+}
+
+.element {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 100px;
+    width: 100px;
+    height: 100px;
+}
+
+.element1 {
+    background-color: red;
+}
+
+.element2 {
+    background-color: green;
+}
+
+.element3 {
+    background-color: blue;
+    align-self: center;
+}
+```
+
+En este ejemplo:
+
+* `.flex` es el contenedor flex (`display: flex`), con `flex-wrap: wrap` para permitir que los elementos pasen a nuevas líneas si no caben.
+* `.element1`, `.element2` y `.element3` son los flex items.
+* `.element3` usa `align-self: center` para alinearse distinto a sus hermanos dentro del cross axis, sin necesidad de cambiar `align-items` en el contenedor.
+* El `outline` en `.flex` es solo una guía visual: al no formar parte del box model, no afecta el tamaño del contenedor ni la distribución de los elementos internos.
+
+Este código práctico también incluye, comentadas, las propiedades `justify-content`, `align-items`, `align-content`, `flex-grow`, `flex-shrink`, `flex-basis` y `order` para ir probándolas una por una (ver el archivo `flexbox.css` con los comentarios corregidos).
+
+---
+
+# Ejemplo práctico: variables CSS
+
+```css
+:root {
+    --border-colores: 1px solid green;
+    --color-principal: white;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.title {
+    border: var(--border-colores);
+    color: darkgoldenrod;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: rgb(17, 1, 13);
+    color: var(--color-principal);
+    text-decoration: none;
+}
+
+.paragraph {
+    color: var(--color-principal);
+}
+```
+
+En este ejemplo, `--border-colores` y `--color-principal` se declaran en `:root`, por lo que están disponibles en todo el documento. `.title` usa `var(--border-colores)` para su borde, y tanto `.btn` como `.paragraph` reutilizan `var(--color-principal)` para el color de texto. Si se necesita cambiar el color principal del sitio, alcanza con modificar una sola línea dentro de `:root`.
+
+> Nota: en el original, `--color-principal` se había declarado como `--color-principal: color: white;`. Una custom property guarda directamente un **valor**, no una declaración completa (no lleva el nombre de la propiedad adentro), por eso se corrigió a `--color-principal: white;`.
+
+---
+
+# Ejemplo práctico: grid
+
+```css
+* {
+    color: white;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.container {
+    width: 90%;
+    height: 600px;
+    border: 2px solid black;
+    margin: 80px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    grid-template-areas:
+        "nav nav nav nav nav"
+        "main main main side side"
+        "main main main side side"
+        "main main main side side"
+        "footer footer footer footer footer";
+}
+
+.item {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item1 {
+    background-color: rgb(84, 17, 17);
+    grid-area: nav;
+}
+
+.item2 {
+    background-color: rgb(6, 6, 109);
+    grid-area: main;
+}
+
+.item3 {
+    background-color: rgb(16, 56, 16);
+    grid-area: footer;
+}
+
+.item4 {
+    background-color: rgb(67, 47, 21);
+    grid-area: side;
+}
+
+.item5 {
+    background-color: darkslategray;
+}
+```
+
+En este ejemplo, `.container` es el contenedor grid, y las cinco áreas (`nav`, `main`, `main`, `side`, `footer`) se definen con `grid-template-areas`. Cada `.item` se asigna a su área mediante `grid-area`. Además, cada `.item` es a la vez un contenedor flex (`display: flex`) para centrar su contenido, lo que muestra que grid y flexbox pueden combinarse: grid ordena la estructura general de la página, y flexbox el contenido interno de cada celda.
+
+Este código también incluye, comentadas, las alternativas con `grid-column` y `grid-row` (posicionamiento por número de línea) para comparar ambos métodos (ver el archivo `grid.css` con los comentarios corregidos).
+
+---
+
+# Ejemplo práctico: media queries
+
+```css
+* {
+    margin: 0;
+}
+
+body {
+    background-color: blueviolet;
+}
+
+.element {
+    background-color: moccasin;
+    width: 300px;
+    height: 300px;
+    margin: 30px auto;
+}
+
+@media (max-width: 700px) {
+    .element {
+        background-color: aqua;
+    }
+}
+
+@media (max-width: 500px) {
+    .element {
+        background-color: brown;
+    }
+}
+
+@media (min-width: 500px) {
+    body {
+        background-color: antiquewhite;
+    }
+}
+```
+
+En este ejemplo:
+
+* `.element` empieza con fondo `moccasin`.
+* Por debajo de `700px` de ancho de viewport, pasa a `aqua`.
+* Por debajo de `500px`, pasa a `brown` (esta regla gana porque está escrita después que la de `700px`, y ambas coinciden a la vez en ese rango).
+* A partir de `500px` de ancho (`min-width: 500px`), el fondo del `body` cambia a `antiquewhite`.

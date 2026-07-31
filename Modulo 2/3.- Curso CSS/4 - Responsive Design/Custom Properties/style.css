@@ -1,0 +1,54 @@
+:root {
+    --border-colores: 1px solid green;
+    /* Antes decía "--color-principal: color: white;". Una custom property
+       guarda un valor, no una declaración completa; por eso se corrige
+       quitando "color:" de adentro. */
+    --color-principal: white;
+}
+
+/*
+:root es una pseudoclase que representa el elemento raíz del documento
+(equivale a html, pero con una especificidad de 10).
+
+Para declarar una variable se usa "--" antes del nombre.
+Son las "custom properties" (propiedades personalizadas), es decir,
+las variables en CSS. Aceptan cualquier valor.
+
+Se usan con la función var(nombre-personalizado).
+
+var() también acepta un valor alternativo (fallback), que se usa si la
+variable indicada no existe:
+var(--variable, 2px solid green)
+
+Esto permite cambiar un valor en un solo lugar y que se refleje en 
+-todos los sitios donde se usa la variable.
+
+Una variable puede declararse dentro de cualquier selector, no solo en
+:root, pero declararla ahí adentro limita su alcance: solo estará
+disponible para ese elemento y sus hijos.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.title {
+    border: var(--border-colores); /* Propiedad personalizada */
+    color: darkgoldenrod;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: rgb(17, 1, 13);
+    color: var(--color-principal);
+    text-decoration: none;
+}
+
+.paragraph {
+    color: var(--color-principal);
+}

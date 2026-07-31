@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/*
+Flexbox surge para facilitar la maquetación flexible, en especial
+en dispositivos móviles. Al poner display: flex, todos los hijos
+directos del contenedor se acomodan uno al lado del otro y se
+vuelven flexibles.
+
+Tiene dos ejes: el main axis y el cross axis.
+El principal (main axis) va de izquierda a derecha por defecto.
+El secundario (cross axis) va de arriba hacia abajo por defecto.
+
+La propiedad flex-direction cambia la dirección del main axis.
+Por defecto va de izquierda a derecha (row).
+
+Tiene 4 valores:
+row            → por defecto, izquierda a derecha
+row-reverse    → comienza de derecha a izquierda
+column         → vertical, de arriba hacia abajo
+column-reverse → vertical, de abajo hacia arriba
+*/
+
+.flex {
+    width: 90%;
+    max-width: 800px;
+    min-height: 600px;
+    margin: 80px auto;
+    border: 3px solid black;
+    display: flex;
+
+    /* Define el comportamiento de los hijos cuando su tamaño total supera
+        el ancho del contenedor. Permite crear nuevas filas o columnas sin
+        modificar el tamaño de los elementos.
+        Valores: nowrap (por defecto), wrap, wrap-reverse */
+    flex-wrap: wrap;
+
+    /* Podemos cambiar la alineación de los elementos dentro del contenedor.
+       justify-content alinea a lo largo del main axis. */
+    /* justify-content: space-between; */
+    /* Valores: flex-start (por defecto), center, flex-end,
+        space-between, space-around, space-evenly (reparte el espacio
+       de forma equitativa en todos los lados) */
+
+    /* align-items: center; */
+    /* Alinea los elementos a lo largo del cross axis.
+        Por defecto es stretch: estira los elementos para ocupar todo el cross axis.
+        flex-end   → los manda al final del cross axis
+        flex-start → los manda al inicio del cross axis
+       baseline   → los alinea según la línea base del texto */
+
+    /* align-content: flex-start; */
+    /* Hace lo mismo que justify-content, pero en el cross axis y agrupando
+        líneas completas (no elementos individuales). No tiene un valor por
+        defecto fijo como align-items. Requiere flex-wrap: wrap para tener efecto.
+        flex-start   → agrupa las líneas al inicio
+        flex-end     → agrupa las líneas al final
+        center       → agrupa las líneas al centro
+        stretch      → estira las líneas para ocupar el espacio disponible
+        space-around → da espacio alrededor de cada línea (el espacio entre
+        líneas se suma)
+       space-evenly → da espacio equitativo entre todas las líneas */
+
+    /* Outline funciona igual que un border, pero no forma parte del box model:
+        no ocupa espacio ni afecta el tamaño del contenedor. Se usa aquí solo
+        como guía visual. */
+    outline: 3px solid black;
+}
+
+.element {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 100px;
+    width: 100px;
+    height: 100px;
+
+    /* flex-grow: 2; */
+    /* Por defecto vale 0. Define cuánto puede crecer un elemento para
+        ocupar el espacio sobrante del contenedor, repartido proporcionalmente
+        entre los elementos que lo declaren. */
+
+    /* flex-shrink: 1; */
+    /* Es como flex-grow, pero al revés: en vez de repartir el espacio
+        sobrante, reparte el espacio faltante cuando el contenedor no
+        alcanza para todos los elementos. flex-grow y flex-shrink son las
+        propiedades que hacen que flexbox sea "flexible". */
+
+    /* flex-basis: auto; */
+    /* Cambia según flex-direction. Define el tamaño base de un elemento
+       en el main axis, antes de aplicar flex-grow o flex-shrink. */
+}
+
+/* En flexbox, los elementos se ordenan según la propiedad order: primero
+    los de valor menor, luego los mayores. Sin declarar order, se acomodan
+    en el mismo orden en que aparecen en el HTML. */
+
+.element1 {
+    background-color: red;
+}
+
+.element2 {
+    background-color: green;
+}
+
+.element3 {
+    background-color: blue;
+
+    /* Alinea el elemento a través del cross axis. Hace lo mismo que
+        align-items, pero se aplica a un elemento específico y sobrescribe
+        lo que diga el contenedor. Acepta los mismos valores y propiedades. */
+    align-self: center;
+}

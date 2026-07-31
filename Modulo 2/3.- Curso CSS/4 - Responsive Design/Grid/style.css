@@ -1,0 +1,102 @@
+* {
+    color: white;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.container {
+    width: 90%;
+    height: 600px;
+    border: 2px solid black;
+    margin: 80px auto;
+    display: grid; /* Sistema bidireccional: controla filas y columnas a la vez */
+
+    /* grid-template-columns: repeat(5, 1fr); */
+    /* grid-template-rows: repeat(5, 1fr); */
+    /* repeat(veces, valor) repite un valor una cantidad determinada de
+        veces. fr es una unidad de medida que toma el espacio disponible
+        del contenedor y lo divide en partes iguales. */
+
+    /* grid-auto-rows: auto; */
+    /* Define el tamaño de las filas creadas automáticamente cuando no
+       se declaran explícitamente con grid-template-rows. */
+
+    /* Para dar valores dinámicos a columnas y filas se usa auto-fit
+        junto con minmax(min, max). Como fr reparte el espacio en partes
+        iguales, todas las columnas terminan con el mismo tamaño entre sí. */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* se adapta según el espacio disponible, evitando media queries */
+    gap: 10px;
+    /* column-gap / row-gap: 20px; */
+    /* Permiten crear espacio solo entre columnas o solo entre filas.
+       Es similar a margin, pero margin le resta tamaño al elemento y
+       requiere ajustar left/top para compensar; gap no. */
+    grid-template-areas:
+        "nav nav nav nav nav"
+        "main main main side side"
+        "main main main side side"
+        "main main main side side"
+        "footer footer footer footer footer";
+    /* La cantidad de columnas y filas escritas acá debe coincidir con
+        las definidas en grid-template-columns/rows. Se definen con un
+        "nombre", y un espacio separa cada columna dentro de la misma fila.
+        Luego, en el selector correspondiente (por ejemplo .item1) se usa
+       grid-area: nombre. Para dejar una celda vacía se usa un punto (.). */
+}
+
+/* Otra forma de ubicar las celdas, sin usar grid-column y grid-row,
+    es mediante grid-template-areas + grid-area. */
+
+.item {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item1 {
+    background-color: rgb(84, 17, 17);
+    /* grid-column: 1 / 4; */ /* Empieza en la línea 1 de columna y termina en la línea 4 (ocupa columnas 1 a 3) */
+    /* grid-row: 1 / 3; */ /* Empieza en la línea 1 de fila y termina en la línea 3 (ocupa las filas 1 y 2) */
+    grid-area: nav;
+}
+
+.item2 {
+    background-color: rgb(6, 6, 109);
+    /* grid-column: 4 / 6; */
+    /* grid-row: 1 / 5; */
+    grid-area: main;
+}
+
+.item3 {
+    background-color: rgb(16, 56, 16);
+    /* grid-row: 5 / 6; */
+    /* grid-column: 1 / 6; */
+    grid-area: footer;
+}
+
+.item4 {
+    background-color: rgb(67, 47, 21);
+    /* grid-row: 3 / 5; */
+    /* grid-column: 1 / 3; */
+    grid-area: side;
+}
+
+.item5 {
+    background-color: darkslategray;
+    /* grid-row: 3 / 5; */
+}
+
+/*
+Grid es el sistema de cuadrículas de CSS.
+Usa filas y columnas para crear una grilla (de ahí su nombre).
+
+Grid lines: las líneas que forman la cuadrícula.
+Cuando se cruzan una fila y una columna se forma una celda (grid item / grid cell).
+Cada cuadrícula tiene líneas de columna (column grid lines) y líneas de fila (row grid lines).
+Una grid area debe ser rectangular o cuadrada; ocupa una cantidad de celdas.
+Se activa con display: grid.
+*/
