@@ -5,6 +5,8 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 ## Índice
 
 * [Selector de clase](#selector-de-clase)
+* [Selectores combinados](#selectores-combinados)
+* [Pseudoclases y pseudoelementos](#pseudoclases-y-pseudoelementos)
 * [Colores](#colores)
 * [Texto](#texto)
 * [Propiedades de texto](#propiedades-de-texto)
@@ -26,6 +28,9 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Variables CSS (Custom Properties)](#variables-css-custom-properties)
 * [Grid](#grid)
 * [Media Queries](#media-queries)
+* [Transform](#transform)
+* [Transiciones](#transiciones)
+* [Animaciones](#animaciones)
 * [Sobrescritura de propiedades](#sobrescritura-de-propiedades)
 * [Selector universal y reset](#selector-universal-y-reset)
 * [Ejemplo práctico: modelo de caja y tipos de caja](#ejemplo-práctico-modelo-de-caja-y-tipos-de-caja)
@@ -37,6 +42,11 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Ejemplo práctico: variables CSS](#ejemplo-práctico-variables-css)
 * [Ejemplo práctico: grid](#ejemplo-práctico-grid)
 * [Ejemplo práctico: media queries](#ejemplo-práctico-media-queries)
+* [Ejemplo práctico: selectores, pseudoclases y pseudoelementos](#ejemplo-práctico-selectores-pseudoclases-y-pseudoelementos)
+* [Ejemplo práctico: transform](#ejemplo-práctico-transform)
+* [Ejemplo práctico: box-shadow y border-radius](#ejemplo-práctico-box-shadow-y-border-radius)
+* [Ejemplo práctico: transiciones](#ejemplo-práctico-transiciones)
+* [Ejemplo práctico: animaciones](#ejemplo-práctico-animaciones)
 
 ---
 
@@ -67,6 +77,152 @@ La misma clase puede reutilizarse:
 ```
 
 Todos esos elementos recibirán los estilos definidos en `.caja`.
+
+---
+
+# Selectores combinados
+
+Un selector combinado (o combinador) selecciona elementos según su relación con otro elemento, en vez de seleccionarlos directamente por su clase, id o tipo.
+
+## Selector de hermano adyacente (`+`)
+
+Selecciona únicamente al hermano que aparece inmediatamente después del elemento de referencia.
+
+```css
+.btn-red + .btn-purple {
+    background-color: blue;
+}
+```
+
+```text
+elemento_referencia + .hermano_siguiente { ... }
+```
+
+Por ejemplo, si el HTML tiene dos elementos `<a>` seguidos, el selector `a + a` selecciona únicamente al segundo `<a>`, el que sigue inmediatamente después del primero.
+
+```html
+<a class="btn-red">Uno</a>
+<a class="btn-purple">Dos</a>
+```
+
+```text
+.btn-red + .btn-purple
+→ selecciona "Dos", porque viene inmediatamente después de .btn-red
+```
+
+## Selector universal combinado
+
+El selector universal (`*`) también puede combinarse con otro selector, para seleccionar todos los descendientes de un elemento.
+
+```css
+.btn-red * {
+    background-color: green;
+}
+```
+
+Esto selecciona a todos los elementos descendientes de `.btn-red` (sus hijos, nietos, etc.), sin importar su tipo o clase.
+
+---
+
+# Pseudoclases y pseudoelementos
+
+## Pseudoclases
+
+Una pseudoclase selecciona un elemento según un estado o condición particular, no según su tipo o clase. Se escriben con dos puntos (`:`).
+
+```css
+selector:pseudoclase {
+    propiedad: valor;
+}
+```
+
+Existen muchas pseudoclases además de las siguientes.
+
+### `:hover`
+
+Indica cuando el usuario pasa el cursor sobre el elemento.
+
+```css
+.btn-red:hover {
+    transform: scale(1.2);
+}
+```
+
+En computadora ocurre al pasar el mouse por encima. En un dispositivo táctil, ocurre al tocar el elemento.
+
+### `:active`
+
+Indica cuando el usuario hace click sobre el elemento.
+
+```css
+.btn-purple:active {
+    transform: scale(1.2);
+}
+```
+
+En computadora ocurre al hacer click. En un dispositivo táctil, ocurre al mantener presionado el elemento.
+
+### `:focus`
+
+Indica cuando un elemento que puede recibir foco (como un `input`, `textarea` o `select`) está activo/seleccionado.
+
+```css
+.input:focus {
+    border: 2px solid blue;
+}
+```
+
+### `:checked`
+
+Indica que un elemento como un checkbox o un radio button está seleccionado. Suele combinarse con el selector de hermano adyacente para estilizar otro elemento según ese estado.
+
+```css
+.check:checked + .label {
+    background-color: green;
+    transform: scale(1.2);
+}
+```
+
+### `:target`
+
+Indica cuando el usuario hace click sobre un enlace que apunta al `id` de un elemento del documento (mediante `href="#id"`).
+
+```css
+#seccion:target {
+    background-color: yellow;
+}
+```
+
+### `:root`
+
+Ya se vio en la sección de [Variables CSS](#variables-css-custom-properties): representa el elemento raíz del documento.
+
+## Pseudoelementos
+
+Un pseudoelemento permite estilizar una parte específica de un elemento, o insertar contenido generado por CSS. Se escriben con dos puntos dobles (`::`).
+
+```css
+selector::pseudoelemento {
+    propiedad: valor;
+}
+```
+
+### `::before` y `::after`
+
+Crean un elemento adicional antes o después del contenido de un elemento.
+
+```css
+.element::after {
+    content: "";
+}
+```
+
+```text
+::before → inserta contenido antes del contenido del elemento
+::after  → inserta contenido después del contenido del elemento
+```
+
+Solo puede existir un `::before` y un `::after` por elemento. Ambos necesitan la propiedad `content` para poder mostrarse, aunque sea un valor vacío (`content: ""`). Fuera de eso, aceptan cualquier otra propiedad CSS (tamaño, color, posición, etc.), igual que un elemento normal.
 
 ---
 
@@ -1178,6 +1334,38 @@ Ejemplo: redondear solo las esquinas superiores (útil para la imagen de una tar
 
 De esta forma, la imagen y el contenedor de texto de una misma tarjeta se combinan visualmente como si fueran una sola caja con las cuatro esquinas redondeadas.
 
+### Esquinas individuales
+
+A diferencia del shorthand `border-radius` (que reparte los valores en un orden fijo), estas propiedades permiten redondear una sola esquina a la vez, de forma independiente:
+
+```css
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+```
+
+### Truco: crear un círculo
+
+Un cuadrado (mismo `width` y `height`) con `border-radius: 50%` se convierte visualmente en un círculo.
+
+```css
+.circulo {
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+}
+```
+
+```text
+┌─────────┐        ╭───────╮
+│         │        │       │
+│ cuadrado│  ───►   │círculo│
+│         │        │       │
+└─────────┘        ╰───────╯
+   width = height        border-radius: 50%
+```
+
 ## `outline`
 
 `outline` dibuja un contorno alrededor de un elemento, de forma similar a `border`.
@@ -1243,6 +1431,50 @@ blur-radius: 3px → sombra difuminada de 3px alrededor de toda la caja
 ```
 
 Es una propiedad útil para dar sensación de profundidad, sin necesidad de agregar un borde visible.
+
+## Detalles de `box-shadow`
+
+`box-shadow` necesita, como mínimo, dos valores: el desplazamiento en `x` y en `y`.
+
+```css
+box-shadow: 10px 10px;
+```
+
+```text
+offset-x
+positivo → desplaza la sombra hacia la derecha
+negativo → desplaza la sombra hacia la izquierda
+
+offset-y
+positivo → desplaza la sombra hacia abajo
+negativo → desplaza la sombra hacia arriba
+```
+
+En cierto sentido, `box-shadow` funciona como un "calco" de la caja del elemento, desplazado y difuminado.
+
+El tercer valor (opcional) es el `blur-radius`, que controla el difuminado:
+
+```css
+box-shadow: 10px 10px 1em;
+```
+
+Un `blur-radius` de `0` (o directamente omitido) genera una sombra nítida, sin difuminar.
+
+El cuarto valor (opcional) es el color de la sombra. Si se omite, el navegador suele usar el color de texto del elemento (`currentColor`).
+
+```css
+box-shadow: 10px 10px 1em rgba(0, 0, 0, 0.5);
+```
+
+### Varias sombras a la vez
+
+Se pueden aplicar múltiples sombras sobre el mismo elemento separándolas con comas.
+
+```css
+box-shadow:
+    0 0 0.5em black,
+    0 0 1em red;
+```
 
 ---
 
@@ -2767,6 +2999,347 @@ Un media query puede afectar a cualquier selector dentro de su bloque, no solo a
 
 ---
 
+# Transform
+
+`transform` permite mover, rotar, escalar o inclinar un elemento, sin afectar el flujo normal del documento ni la posición de otros elementos.
+
+```css
+.element {
+    transform: translateX(100px);
+}
+```
+
+El navegador trabaja con un eje `x` y un eje `y`:
+
+```text
+x: positivo → hacia la derecha | negativo → hacia la izquierda
+y: positivo → hacia abajo      | negativo → hacia arriba
+```
+
+## `translate`
+
+Desplaza un elemento desde su posición original, sin modificar la posición de otros elementos (a diferencia de, por ejemplo, cambiar un `margin`).
+
+```css
+transform: translateX(100px); /* 100px a la derecha */
+transform: translateY(50px);  /* 50px hacia abajo */
+```
+
+Si se usan porcentajes, se calculan sobre el propio tamaño del elemento (no sobre el contenedor):
+
+```text
+Elemento: 300px de ancho
+translateX(100%) → se desplaza 300px (el 100% de su propio ancho)
+```
+
+Para aplicar ambos ejes a la vez, deben ir en la misma línea. Por la cascada, si se repite la propiedad `transform`, solo se aplica la última declaración completa:
+
+```css
+transform: translateX(100px) translateY(50px);
+```
+
+Forma abreviada (shorthand), con el eje `x` primero y el `y` después:
+
+```css
+transform: translate(100px, 50px);
+```
+
+## `rotate`
+
+Rota un elemento. Solo acepta valores angulares:
+
+```css
+transform: rotate(45deg);
+```
+
+```text
+deg  → grados, de 0deg a 360deg
+grad → gradianes, de 0 a 400grad
+rad  → radianes, de 0 a 6.28rad
+turn → vueltas completas, de 0 a 1turn
+```
+
+## `scale`
+
+Escala el tamaño de un elemento. Toma un valor numérico (sin unidad).
+
+```css
+transform: scale(1.5);
+```
+
+```text
+scale(1)   → 100% (tamaño original)
+scale(2)   → 200%
+valor > 1  → aumenta el tamaño
+valor < 1  → disminuye el tamaño
+```
+
+También existen `scaleX` y `scaleY` para escalar un solo eje, y una forma abreviada con ambos ejes:
+
+```css
+transform: scale(2, 1); /* eje x al doble, eje y sin cambios */
+```
+
+## `skew`
+
+Inclina un elemento (y su contenido, incluido el texto).
+
+```css
+transform: skewX(10deg);
+transform: skewY(10deg);
+```
+
+No se recomienda usar `skew` de forma aislada, ya que puede generar diferencias de compatibilidad entre navegadores.
+
+## Combinar varios valores
+
+Un `transform` puede combinar varias funciones en una misma declaración.
+
+```css
+transform: translateX(100px) rotate(45deg) scale(1.5);
+```
+
+El orden de los valores importa: cada función se aplica sobre el resultado de la anterior, por lo que escalar y luego rotar no da el mismo resultado que rotar y luego escalar.
+
+## Por qué usar `transform`
+
+`transform` consume menos recursos que animar `width` o `height`, porque el navegador no necesita recalcular el layout de toda la página: el cambio se aplica únicamente sobre el elemento, en una capa aparte.
+
+---
+
+# Transiciones
+
+Una transición es un cambio de valor de una propiedad CSS de forma suave (gradual en el tiempo), en vez de un cambio instantáneo. Se activan cuando esa propiedad cambia de valor, por ejemplo al aplicarse una pseudoclase como `:hover`.
+
+No todas las propiedades CSS pueden animarse mediante transiciones.
+
+## Propiedades de transition
+
+```css
+.element {
+    transition-property: all;
+    transition-duration: 1s;
+}
+```
+
+### `transition-property`
+
+Especifica qué propiedad se va a animar.
+
+```css
+transition-property: background-color;
+```
+
+El valor por defecto es `all` (anima cualquier propiedad que cambie), pero no conviene dejarlo así: `all` consume más recursos, porque el navegador debe vigilar todas las propiedades por si cambian. Es preferible especificar la propiedad concreta, como `background-color` o `transform`.
+
+### `transition-duration`
+
+Especifica cuánto dura la animación.
+
+```css
+transition-duration: 1s;
+```
+
+Por defecto es `0s` (sin transición, el cambio es instantáneo).
+
+### `transition-timing-function`
+
+Especifica la curva de aceleración de la transición.
+
+```css
+transition-timing-function: ease;
+```
+
+```text
+ease        → empieza lento, se acelera, y termina lento (valor por defecto)
+linear      → velocidad constante, sin cambios
+ease-in     → empieza lento y termina rápido
+ease-out    → empieza rápido y termina lento
+ease-in-out → empieza lento, se acelera, y termina lento (más marcado que ease)
+step-start  → el cambio ocurre de golpe, al inicio
+step-end    → el cambio ocurre de golpe, al final
+```
+
+### `transition-delay`
+
+Especifica cuánto tiempo tarda en iniciar la transición, una vez que la propiedad cambia de valor.
+
+```css
+transition-delay: 0.5s;
+```
+
+Por defecto es `0s`.
+
+## Shorthand `transition`
+
+```css
+transition: background-color 1s ease 0.5s;
+```
+
+```text
+transition: property duration timing-function delay;
+```
+
+El único valor obligatorio es `duration`; el resto tiene valores por defecto.
+
+## Ejemplo: animar según el hover de un contenedor
+
+```css
+.element {
+    transition-property: all;
+    transition-duration: 1s;
+}
+
+.container:hover .element {
+    transform: translateX(240px) rotate(360deg) scale(1);
+}
+```
+
+Aplicar el `transform` cuando el **contenedor** recibe `:hover` (en vez de aplicarlo directamente al elemento animado) evita que la animación se interrumpa: si el `:hover` estuviera en `.element`, el mouse podría "salirse" del elemento a medida que este se mueve, cortando la animación a mitad de camino.
+
+---
+
+# Animaciones
+
+Una animación en CSS permite definir una secuencia de estados (no solo un punto de inicio y uno final, como una transición) mediante la regla `@keyframes`.
+
+## `@keyframes`
+
+Define el nombre de la animación y los valores que toman las propiedades en distintos momentos.
+
+```css
+@keyframes mover {
+    0% {
+        transform: translateX(0px);
+        background-color: tomato;
+    }
+    50% {
+        transform: translateX(240px) rotate(360deg);
+    }
+    100% {
+        transform: translate(0, 0);
+        background-color: darkgoldenrod;
+    }
+}
+```
+
+Los porcentajes representan el progreso de la animación, del `0%` (inicio) al `100%` (final). También pueden agregarse pasos intermedios, como `25%` o `75%`.
+
+Cuando solo hay dos estados (inicio y final), puede usarse `from` y `to` en vez de porcentajes:
+
+```css
+@keyframes cambiar-color {
+    from {
+        background-color: darkgoldenrod;
+    }
+    to {
+        background-color: darkorange;
+    }
+}
+```
+
+## Aplicar la animación a un elemento
+
+```css
+.element {
+    animation-name: mover;
+    animation-duration: 2s;
+    animation-timing-function: ease;
+    animation-iteration-count: 3;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+```
+
+### `animation-name`
+
+Indica qué `@keyframes` se va a usar.
+
+```css
+animation-name: mover;
+```
+
+### `animation-duration`
+
+Especifica cuánto dura un ciclo completo de la animación.
+
+```css
+animation-duration: 2s;
+```
+
+### `animation-timing-function`
+
+Especifica la curva de aceleración de la animación. Acepta los mismos valores que `transition-timing-function` (`ease` por defecto, `linear`, `ease-in`, `ease-out`, `ease-in-out`, `step-start`, `step-end`).
+
+### `animation-iteration-count`
+
+Especifica cuántas veces se repite la animación.
+
+```css
+animation-iteration-count: 3;
+animation-iteration-count: infinite;
+```
+
+Por defecto es `1`.
+
+### `animation-direction`
+
+Especifica en qué sentido avanza la animación en cada repetición.
+
+```text
+normal            → siempre de 0% a 100% (valor por defecto)
+reverse           → siempre de 100% a 0%
+alternate         → alterna: primero 0% → 100%, luego 100% → 0%, y así sucesivamente
+alternate-reverse → alterna, pero empezando de 100% → 0%
+```
+
+`alternate` se usa para que la animación vuelva al estado inicial de forma suave (recorriendo los mismos pasos hacia atrás), en vez de saltar de golpe del `100%` al `0%` al reiniciar.
+
+### `animation-delay`
+
+Especifica cuánto tiempo tarda en iniciar la animación.
+
+```css
+animation-delay: 0.5s;
+```
+
+Por defecto es `0s`.
+
+### `animation-fill-mode`
+
+Especifica qué estilos se aplican antes de que empiece la animación y después de que termina.
+
+```text
+none      → no aplica ningún estilo del @keyframes fuera de cuando la animación está corriendo (valor por defecto)
+forwards  → al terminar, mantiene los estilos del último keyframe (100%, o el que corresponda según la dirección)
+backwards → antes de empezar (por ejemplo, durante un animation-delay), aplica los estilos del primer keyframe
+both      → combina forwards y backwards
+```
+
+### `animation-play-state`
+
+Permite pausar o reanudar una animación en curso.
+
+```css
+.element:hover {
+    animation-play-state: paused;
+}
+```
+
+En este ejemplo, la animación se pausa mientras el cursor esté sobre el elemento.
+
+## Shorthand `animation`
+
+```css
+animation: mover 2s ease 0s 3 alternate forwards;
+```
+
+```text
+animation: name duration timing-function delay iteration-count direction fill-mode;
+```
+
+---
+
 # Sobrescritura de propiedades
 
 Cuando una propiedad se repite dentro de la misma regla, se utiliza normalmente el último valor válido.
@@ -3411,3 +3984,279 @@ En este ejemplo:
 * Por debajo de `700px` de ancho de viewport, pasa a `aqua`.
 * Por debajo de `500px`, pasa a `brown` (esta regla gana porque está escrita después que la de `700px`, y ambas coinciden a la vez en ese rango).
 * A partir de `500px` de ancho (`min-width: 500px`), el fondo del `body` cambia a `antiquewhite`.
+
+---
+
+# Ejemplo práctico: selectores, pseudoclases y pseudoelementos
+
+```css
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.button {
+    margin: 50px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 20px 0;
+    text-align: center;
+    width: 200px;
+}
+
+.btn-red + .btn-purple {
+    background-color: blue;
+}
+
+.btn-red {
+    background-color: red;
+}
+
+.btn-red:hover {
+    transform: scale(1.2);
+}
+
+.btn-purple {
+    background-color: purple;
+}
+
+.btn-purple:active {
+    transform: scale(1.2);
+}
+
+.btn-tomato {
+    background-color: tomato;
+}
+
+.btn-red * {
+    background-color: green;
+}
+
+.element {
+    width: max-content;
+    padding: 20px;
+    color: white;
+    font-size: 30px;
+    margin: 60px;
+    background-color: darkgoldenrod;
+    margin-left: 40px;
+}
+
+.input {
+    display: block;
+    margin: 20px;
+    padding: 16px;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.input:focus {
+    border: 2px solid blue;
+}
+
+.label {
+    background-color: red;
+    color: white;
+}
+
+.check {
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.check:checked + .label {
+    background-color: green;
+    transform: scale(1.2);
+}
+
+.element::after {
+    content: "";
+}
+```
+
+En este ejemplo:
+
+* `.btn-red + .btn-purple` es un selector de hermano adyacente: solo afecta a `.btn-purple` cuando aparece justo después de `.btn-red` en el HTML.
+* `.btn-red *` selecciona a todos los descendientes de `.btn-red`.
+* `.btn-red:hover` y `.btn-purple:active` cambian de tamaño según el estado del mouse.
+* `.input:focus` resalta el borde cuando el input está activo.
+* `.check:checked + .label` cambia el estilo de la etiqueta cuando el checkbox asociado está marcado.
+* `.element::after` crea un pseudoelemento vacío (requiere `content: ""` para existir, aunque no se le haya dado tamaño ni contenido visible en este ejemplo puntual).
+
+---
+
+# Ejemplo práctico: transform
+
+```css
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    background-color: darkgoldenrod;
+    margin: 60px;
+
+    transform: translateX(100px) rotate(45deg) scale(1.2);
+}
+```
+
+En este ejemplo se combinan las tres funciones de `transform` en una sola declaración: primero desplaza el elemento `100px` a la derecha, luego lo rota `45deg` y por último lo escala al `120%`. Como el orden de las funciones importa, cambiar el orden (por ejemplo, escalar antes de rotar) puede dar un resultado visual distinto.
+
+> Nota: en el código original, la propiedad `transform` se repetía tres veces seguidas (`translateX`, luego `rotate`, luego `scale`) dentro de la misma regla. Por la cascada, solo se aplica la última declaración válida (`transform: scale` sin ningún valor, que además es inválida). Para combinar las tres transformaciones a la vez, deben ir juntas en una sola línea, como en el ejemplo de arriba.
+
+---
+
+# Ejemplo práctico: box-shadow y border-radius
+
+```css
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.element {
+    margin: 80px auto;
+    width: 200px;
+    height: 200px;
+    background-color: darkgoldenrod;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 10px 10px 1em;
+}
+
+.ojo {
+    margin: 1em;
+    width: 4em;
+    height: 4em;
+    background-color: rgb(255, 252, 252);
+    border-radius: 50%;
+    box-shadow: 0 0 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pupila {
+    width: 2em;
+    height: 2em;
+    background-color: rgb(8, 8, 8);
+    box-shadow: 0 0 0.5em;
+    border-radius: 50%;
+}
+```
+
+En este ejemplo, `.ojo` y `.pupila` usan `border-radius: 50%` sobre elementos cuadrados para formar dos círculos concéntricos (un "ojo" con su pupila), cada uno con su propia sombra suave (`box-shadow: 0 0 0.5em`, sin desplazamiento, solo difuminado).
+
+---
+
+# Ejemplo práctico: transiciones
+
+```css
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    background-color: darkgoldenrod;
+    margin: 60px;
+
+    transition-property: all;
+    transition-duration: 1s;
+}
+
+.container:hover .element {
+    transform: translateX(240px) rotate(360deg) scale(1);
+}
+```
+
+En este ejemplo, `.element` tiene declarada una transición sobre `all`, con una duración de `1s`. El cambio de `transform` se dispara cuando su contenedor (`.container`) recibe `:hover`, no el propio `.element`; así se evita que la animación se corte si el elemento se mueve fuera del alcance del cursor.
+
+---
+
+# Ejemplo práctico: animaciones
+
+```css
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    background-color: darkgoldenrod;
+    border-radius: 50%;
+    margin: 60px;
+
+    animation-name: mover;
+    animation-duration: 2s;
+    animation-timing-function: ease;
+    animation-iteration-count: 3;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+.element:hover {
+    animation-play-state: paused;
+}
+
+@keyframes mover {
+    0% {
+        transform: translateX(0px);
+        background-color: tomato;
+    }
+    25% {
+        transform: translateX(240px);
+        background-color: darkorange;
+    }
+    50% {
+        transform: translateX(240px) rotate(360deg);
+    }
+    75% {
+        transform: translate(0, 120px);
+    }
+    100% {
+        transform: translate(0, 0);
+        background-color: darkgoldenrod;
+    }
+}
+
+@keyframes cambiar-color {
+    from {
+        background-color: darkgoldenrod;
+    }
+    to {
+        background-color: darkorange;
+    }
+}
+
+@keyframes crecer {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(2.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+```
+
+En este ejemplo, `.element` usa la animación `mover` (definida con `@keyframes`), que combina desplazamiento, rotación y cambio de color en distintos puntos del recorrido (`0%`, `25%`, `50%`, `75%`, `100%`). Con `animation-direction: alternate`, al llegar al final la animación vuelve sobre sus pasos en vez de saltar de golpe al inicio, y `animation-fill-mode: forwards` mantiene el último estado una vez que se completan las 3 repeticiones (`animation-iteration-count: 3`).
+
+`@keyframes cambiar-color` y `@keyframes crecer` quedan definidas pero sin usarse todavía en ningún selector; se dejan documentadas por si se retoman en una práctica posterior.

@@ -1,0 +1,104 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    background-color: darkgoldenrod;
+    border-radius: 50%;
+    margin: 60px;
+
+    animation-name: mover;
+    animation-duration: 2s;
+    animation-timing-function: ease;
+    animation-iteration-count: 3;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+    /* forwards  → al terminar la animación, se mantienen los estilos
+                    del último keyframe (donde se quedó)
+        backwards → aplica los estilos del primer keyframe (0% o el que
+                    corresponda) antes de que la animación empiece
+        both      → combina forwards y backwards */
+    /* Por defecto, animation-fill-mode es none. */
+    /* Shorthand: animation: name duration timing-function delay iteration-count direction fill-mode; */
+}
+
+/* Cuando el mouse está sobre el elemento, la animación se pausa. */
+.element:hover {
+    animation-play-state: paused;
+}
+
+@keyframes mover {
+    0% {
+        transform: translateX(0px);
+        background-color: tomato;
+    }
+    25% {
+        transform: translateX(240px);
+        background-color: darkorange;
+    }
+    50% {
+        transform: translateX(240px) rotate(360deg);
+    }
+    75% {
+        transform: translate(0, 120px);
+    }
+    100% {
+        transform: translate(0, 0);
+        background-color: darkgoldenrod;
+    }
+}
+
+@keyframes cambiar-color {
+    from {
+        background-color: darkgoldenrod;
+    }
+    to {
+        background-color: darkorange;
+    }
+}
+
+@keyframes crecer {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(2.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/*
+Animación:
+Se le puede dar un nombre a la animación y especificar los valores
+iniciales y finales (y los intermedios) con @keyframes.
+
+from → valor inicial (equivale a 0%)
+to   → valor final (equivale a 100%)
+La animación toma los valores de "from" y los transforma hacia "to".
+
+animation-duration          → especifica la duración de la animación.
+animation-timing-function   → especifica la curva de aceleración. Por defecto, ease.
+    Puede ser: linear, ease-in, ease-out, ease-in-out, step-start, step-end.
+animation-iteration-count   → especifica cuántas veces se repite la animación.
+    Por defecto, 1. También puede ser infinite.
+animation-direction         → especifica la dirección de la animación. Por defecto, normal.
+    normal            → siempre de 0% a 100%
+    reverse           → siempre de 100% a 0%
+    alternate         → alterna entre 0%→100% y 100%→0% en cada repetición
+    alternate-reverse → igual que alternate, pero empezando en sentido inverso
+
+Se usa alternate para que la animación vuelva al estado inicial de
+forma suave (recorriendo los mismos pasos hacia atrás), en vez de
+saltar de golpe del 100% al 0% al reiniciar. reverse simplemente
+invierte el sentido: empieza en 100% y termina en 0%.
+
+animation-delay     → especifica cuánto tarda en iniciar la animación.
+animation-fill-mode → especifica cómo se aplican los estilos antes y
+                        después de la animación. Por defecto, none.
+                        Puede ser forwards, backwards o both.
+*/

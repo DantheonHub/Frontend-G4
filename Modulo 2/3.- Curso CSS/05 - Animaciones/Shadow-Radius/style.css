@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.element {
+    margin: 80px auto;
+    width: 200px;
+    height: 200px;
+    background-color: darkgoldenrod;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 10px 10px 1em;
+    /* Primer valor (offset-x): positivo → derecha | negativo → izquierda */
+    /* Segundo valor (offset-y): positivo → abajo  | negativo → arriba */
+    /* Se necesitan como mínimo dos valores: el offset en x e y. */
+    /* box-shadow funciona como un "calco" de la caja del elemento,
+        desplazado y difuminado. */
+    /* El tercer valor (opcional) es el blur-radius, que controla el
+        difuminado. Con un valor de 0 (o sin indicarlo), la sombra queda
+        nítida, sin difuminar. */
+    /* El cuarto valor (opcional) es el color de la sombra; si se omite,
+        suele tomar el color de texto (currentColor). */
+    /* Se pueden aplicar varias sombras a la vez separándolas con comas. */
+}
+
+/*
+Para hacer un círculo, alcanza con un cuadrado (mismo width y height)
+con border-radius: 50%.
+
+También existen las propiedades individuales por esquina, que a
+diferencia del shorthand border-radius permiten redondear una sola
+esquina a la vez:
+border-top-left-radius
+border-top-right-radius
+border-bottom-left-radius
+border-bottom-right-radius
+*/
+
+.ojo {
+    margin: 1em;
+    width: 4em;
+    height: 4em;
+    background-color: rgb(255, 252, 252);
+    border-radius: 50%; /* Shorthand para las 4 esquinas */
+    box-shadow: 0 0 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pupila {
+    width: 2em;
+    height: 2em;
+    background-color: rgb(8, 8, 8);
+    box-shadow: 0 0 0.5em;
+    border-radius: 50%;
+}

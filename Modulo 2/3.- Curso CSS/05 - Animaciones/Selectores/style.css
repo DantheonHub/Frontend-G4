@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.button {
+    margin: 50px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 20px 0;
+    text-align: center;
+    width: 200px;
+}
+
+/* Selector de hermano adyacente (combinador).
+    elemento_referencia + .hermano_siguiente { }
+    Selecciona únicamente al hermano que aparece inmediatamente
+    después del elemento de referencia. */
+.btn-red + .btn-purple {
+    background-color: blue;
+}
+
+.btn-red {
+    background-color: red;
+}
+
+/* :hover indica cuando el usuario pasa el mouse sobre el elemento.
+    En celular equivale a tocar el elemento. */
+.btn-red:hover {
+    transform: scale(1.2);
+}
+
+.btn-purple {
+    background-color: purple;
+}
+
+/* :active indica cuando el usuario hace click sobre el elemento.
+    En celular equivale a mantenerlo presionado. */
+.btn-purple:active {
+    transform: scale(1.2);
+}
+
+.btn-tomato {
+    background-color: tomato;
+}
+
+/* El selector universal también se puede combinar: esto selecciona
+    a todos los descendientes de .btn-red. */
+.btn-red * {
+    background-color: green;
+}
+
+/* Se puede usar href="#id" en un enlace para ir directo a una parte
+    del documento. Cuando eso ocurre, el elemento con ese id recibe la
+    pseudoclase :target. */
+
+/*
+Pseudoclases:
+Empiezan con dos puntos (:). Existen muchas más que las usadas acá,
+por ejemplo :root.
+
+:hover   → el usuario pasa (o toca) el elemento
+:active  → el usuario hace click (o mantiene presionado) el elemento
+:target  → el usuario hace click en un enlace que apunta a un id del documento
+:focus   → el elemento (input, textarea, select, etc.) está activo/seleccionado
+:checked → el elemento (checkbox o radio) está marcado
+*/
+
+.element {
+    width: max-content;
+    padding: 20px;
+    color: white;
+    font-size: 30px;
+    margin: 60px;
+    background-color: darkgoldenrod;
+    margin-left: 40px;
+}
+
+.input {
+    display: block;
+    margin: 20px;
+    padding: 16px;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.input:focus {
+    border: 2px solid blue;
+}
+
+.label {
+    background-color: red;
+    color: white;
+}
+
+.check {
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.check:checked + .label {
+    background-color: green;
+    transform: scale(1.2);
+}
+
+/*
+Pseudoelementos:
+Empiezan con dos puntos dobles (::). Los principales son ::before y ::after.
+Solo puede existir un ::before y un ::after por elemento, y ambos
+necesitan la propiedad content para poder mostrarse (aunque sea vacío).
+::before crea un elemento antes del contenido del elemento.
+::after crea un elemento después del contenido del elemento.
+Se les puede aplicar cualquier propiedad CSS.
+*/
+.element::after {
+    content: "";
+}

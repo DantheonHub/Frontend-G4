@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.element {
+    width: 300px;
+    height: 300px;
+    background-color: darkgoldenrod;
+    margin: 60px;
+
+    transition-property: all;
+    transition-duration: 1s;
+}
+
+/* Cuando el contenedor (.container) recibe :hover, se aplica la
+    transformación al elemento hijo (.element).
+    Si el :hover se aplicara directamente sobre .element, la animación
+    se interrumpiría en cuanto el elemento se mueva fuera del cursor,
+    porque habría que "perseguirlo" con el mouse para mantenerla activa. */
+.container:hover .element {
+    transform: translateX(240px) rotate(360deg) scale(1);
+}
+
+/*
+Las transiciones son efectos de animación (shorthand: transition) que
+se aplican cuando una propiedad CSS cambia de valor. No todas las
+propiedades pueden animarse mediante una transición.
+
+Una transición es pasar de un valor a otro de forma suave (gradual),
+en vez de un cambio instantáneo.
+
+transition-property        → especifica la propiedad que se va a animar. Por defecto, all.
+transition-duration        → especifica cuánto dura la animación. Por defecto, 0s.
+transition-timing-function → especifica la curva de aceleración. Por defecto, ease.
+    ease        → empieza lento, se acelera y termina lento
+    linear      → velocidad constante, sin cambios
+    ease-in     → empieza lento y termina rápido
+    ease-out    → empieza rápido y termina lento
+    ease-in-out → empieza lento, se acelera y termina lento
+    step-start  → el cambio ocurre de golpe, al inicio
+    step-end    → el cambio ocurre de golpe, al final
+transition-delay           → especifica cuánto tarda en iniciar la animación. Por defecto, 0s.
+
+Se necesita como mínimo un valor: duration.
+
+No conviene dejar transition-property en "all" por defecto, ya que
+consume más recursos (el navegador vigila todas las propiedades por
+si cambian). Es mejor especificar la propiedad concreta, como
+background-color o transform.
+*/
