@@ -31,6 +31,7 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Transform](#transform)
 * [Transiciones](#transiciones)
 * [Animaciones](#animaciones)
+* [Metodología BEM](#metodología-bem)
 * [Sobrescritura de propiedades](#sobrescritura-de-propiedades)
 * [Selector universal y reset](#selector-universal-y-reset)
 * [Ejemplo práctico: modelo de caja y tipos de caja](#ejemplo-práctico-modelo-de-caja-y-tipos-de-caja)
@@ -47,6 +48,8 @@ Esta biblioteca reúne definiciones, ejemplos y relaciones entre los conceptos d
 * [Ejemplo práctico: box-shadow y border-radius](#ejemplo-práctico-box-shadow-y-border-radius)
 * [Ejemplo práctico: transiciones](#ejemplo-práctico-transiciones)
 * [Ejemplo práctico: animaciones](#ejemplo-práctico-animaciones)
+* [Ejemplo práctico: landing page (grid responsive + BEM)](#ejemplo-práctico-landing-page-grid-responsive--bem)
+* [Ejemplo práctico: formulario animado (floating label)](#ejemplo-práctico-formulario-animado-floating-label)
 
 ---
 
@@ -110,6 +113,38 @@ Por ejemplo, si el HTML tiene dos elementos `<a>` seguidos, el selector `a + a` 
 → selecciona "Dos", porque viene inmediatamente después de .btn-red
 ```
 
+## Selector de hermano general (`~`)
+
+A diferencia de `+` (que selecciona solo al hermano inmediato), `~` selecciona a **todos** los hermanos que aparecen después del elemento de referencia, sin importar si están pegados o no.
+
+```css
+.form__input:focus ~ .form__line {
+    transform: scale(1);
+}
+```
+
+```text
+elemento_referencia ~ .hermano_posterior { ... }
+```
+
+```html
+<input class="form__input" />
+<label class="form__label">Nombre</label>
+<span class="form__line"></span>
+```
+
+```text
+.form__input ~ .form__label → selecciona .form__label
+.form__input ~ .form__line  → selecciona .form__line
+```
+
+Ambos elementos son hermanos posteriores de `.form__input`, aunque `.form__line` no esté pegado inmediatamente después.
+
+```text
++ → solo el hermano inmediato siguiente
+~ → todos los hermanos siguientes
+```
+
 ## Selector universal combinado
 
 El selector universal (`*`) también puede combinarse con otro selector, para seleccionar todos los descendientes de un elemento.
@@ -171,6 +206,35 @@ Indica cuando un elemento que puede recibir foco (como un `input`, `textarea` o 
     border: 2px solid blue;
 }
 ```
+
+### `:placeholder-shown`
+
+Indica cuando un `input` está mostrando su `placeholder`; es decir, cuando el campo está **vacío** (todavía no se escribió nada, y no tiene foco con contenido).
+
+```css
+.form__input:placeholder-shown {
+    border-color: gray;
+}
+```
+
+En cuanto el usuario escribe algo (o el campo tiene un valor), el `placeholder` deja de mostrarse y la pseudoclase deja de aplicar.
+
+### `:not()`
+
+Es una pseudoclase de negación: selecciona los elementos que **no** cumplen con el selector indicado adentro del paréntesis.
+
+```css
+.form__input:not(:placeholder-shown) {
+    border-color: var(--main-color);
+}
+```
+
+```text
+:not(:placeholder-shown) → selecciona el input cuando NO está mostrando
+                            su placeholder, es decir, cuando tiene contenido
+```
+
+`:not()` puede combinarse con cualquier otro selector o pseudoclase, no solo con `:placeholder-shown`.
 
 ### `:checked`
 
@@ -340,6 +404,14 @@ El valor alfa va de `0` a `1`.
 1   → opaco
 ```
 
+En navegadores modernos, `rgb()` también acepta un cuarto valor de alfa directamente, sin necesidad de escribir `rgba()`:
+
+```css
+box-shadow: 0 5px 10px -5px rgb(0, 0, 0, 0.3);
+```
+
+Ambas formas (`rgb()` con 4 valores y `rgba()`) funcionan igual; `rgba()` sigue siendo más explícita y ampliamente reconocida.
+
 ### HSL
 
 HSL significa:
@@ -387,6 +459,27 @@ HSL también admite transparencia:
 
 ```css
 color: hsla(200, 100%, 50%, 0.5);
+```
+
+## `opacity`
+
+Mientras que el alfa de `rgba()`/`hsla()` controla la transparencia de un solo color, `opacity` controla la transparencia de **todo el elemento**, incluido su contenido, sus bordes y su sombra.
+
+```css
+.element {
+    opacity: 0.85;
+}
+```
+
+```text
+0   → completamente transparente
+1   → completamente opaco (valor por defecto)
+0.85 → casi opaco, con un poco de transparencia
+```
+
+```text
+rgba(color, alfa) → transparencia solo de ese color puntual
+opacity            → transparencia de todo el elemento en conjunto
 ```
 
 ---
@@ -1171,6 +1264,33 @@ Esto permite que el elemento se reduzca en pantallas pequeñas sin crecer demasi
 Contenedor pequeño → 80% del espacio
 Contenedor grande  → máximo 500px
 ```
+
+## Tamaños intrínsecos: `max-content`, `min-content` y `fit-content`
+
+Además de valores fijos (`px`) o relativos (`%`), `width` y `height` aceptan palabras clave que calculan el tamaño según el propio contenido del elemento.
+
+```css
+.element {
+    width: max-content;
+}
+```
+
+```text
+max-content → el elemento ocupa el ancho necesario para mostrar su
+              contenido sin cortarlo ni hacer saltos de línea innecesarios
+min-content → el elemento ocupa el ancho mínimo posible, cortando el
+              contenido (por ejemplo, texto) en tantas líneas como sea necesario
+fit-content → se comporta como max-content, pero sin superar el ancho
+              disponible del contenedor (combina lo mejor de ambos)
+```
+
+```css
+.attribution {
+    width: fit-content;
+}
+```
+
+Son útiles para cajas que deben ajustarse exactamente a su contenido (como una etiqueta o un botón), sin necesidad de calcular un `width` fijo a mano.
 
 ---
 
@@ -2075,6 +2195,19 @@ Alfa 1   → opaco
 
 Por lo tanto, `rgba(..., 0.3)` es semitransparente, no opaco.
 
+## `backdrop-filter`
+
+Aplica un efecto visual (difuminado, brillo, contraste, etc.) sobre lo que se ve **detrás** de un elemento, en vez de sobre el elemento mismo.
+
+```css
+.card {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(6px);
+}
+```
+
+Es el efecto conocido como "vidrio esmerilado" (frosted glass): el fondo detrás de la caja se ve difuminado a través de ella, mientras el contenido de la caja permanece nítido. Suele combinarse con un fondo semitransparente (con `rgba` u `opacity`) para que el efecto de difuminado sea visible.
+
 ## Formatos de imagen
 
 ### JPG
@@ -2921,6 +3054,50 @@ Este resultado es el mismo que se logra con `grid-template-areas`, pero indicand
 | `grid-column` / `grid-row`           | Útil para posiciones puntuales basadas en números de línea       |
 | `grid-template-areas` + `grid-area`  | Más visual y legible; el diseño se puede leer directamente en el CSS |
 
+## `grid-auto-flow`
+
+Define en qué dirección se van acomodando los elementos que no tienen una posición explícita (sin `grid-area`, `grid-column` ni `grid-row`).
+
+```css
+.container {
+    display: grid;
+    grid-auto-flow: column;
+}
+```
+
+```text
+row (por defecto) → acomoda los elementos llenando primero las filas
+column            → acomoda los elementos llenando primero las columnas
+```
+
+Es útil, por ejemplo, para una lista de enlaces de navegación: con `grid-auto-flow: column`, cada elemento pasa a ocupar una columna nueva en vez de amontonarse en la misma fila.
+
+```css
+.nav-list {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1em;
+}
+```
+
+## `justify-self` y `align-self` en grid
+
+Así como `align-self` (ya visto en [Flexbox](#flexbox)) sobrescribe la alineación de un elemento en el cross axis, en grid existen dos propiedades equivalentes para un elemento individual dentro de su celda:
+
+```css
+.item {
+    justify-self: end;
+    align-self: end;
+}
+```
+
+```text
+justify-self → alinea el elemento horizontalmente dentro de su celda
+align-self   → alinea el elemento verticalmente dentro de su celda
+```
+
+Ambas aceptan los valores `start`, `end`, `center` y `stretch` (por defecto). También existen sus versiones para todos los elementos del contenedor a la vez: `justify-items` y `align-items`.
+
 ---
 
 # Media Queries
@@ -3090,6 +3267,25 @@ transform: skewY(10deg);
 ```
 
 No se recomienda usar `skew` de forma aislada, ya que puede generar diferencias de compatibilidad entre navegadores.
+
+## `transform-origin`
+
+Define el punto desde el cual se aplican las transformaciones (el "pivote"). Por defecto, ese punto es el centro del elemento (`50% 50%`).
+
+```css
+.form__label {
+    transform: translateY(-12px) scale(0.7);
+    transform-origin: top left;
+}
+```
+
+```text
+center (por defecto) → rota/escala desde el centro del elemento
+top left             → rota/escala desde la esquina superior izquierda
+bottom right         → rota/escala desde la esquina inferior derecha
+```
+
+Es especialmente importante para `scale` y `rotate`: cambiar el `transform-origin` cambia hacia dónde "crece" o hacia dónde gira el elemento. Por ejemplo, con `scale`, si el origen es `top left`, el elemento se achica o agranda manteniendo fija su esquina superior izquierda, en vez de mantener fijo su centro.
 
 ## Combinar varios valores
 
@@ -3337,6 +3533,85 @@ animation: mover 2s ease 0s 3 alternate forwards;
 ```text
 animation: name duration timing-function delay iteration-count direction fill-mode;
 ```
+
+---
+
+# Metodología BEM
+
+BEM significa **Block, Element, Modifier**. Es una convención para nombrar clases de CSS de forma clara y consistente, pensada para mantener el código flexible, modular y fácil de mantener a medida que un proyecto crece.
+
+No es una propiedad ni una regla de CSS: es una forma de organizar los nombres de las clases en el HTML y el CSS.
+
+## Block (bloque)
+
+Es una parte independiente de la interfaz, que no necesita de otros elementos para funcionar por sí misma.
+
+Su nombre describe qué representa, no cómo se ve:
+
+```css
+.header { }
+.menu { }
+.footer { }
+```
+
+## Element (elemento)
+
+Es una parte de un block que no puede existir por sí sola; siempre pertenece a un block.
+
+Se nombra como `block__element` (dos guiones bajos):
+
+```css
+.header__title { }
+.menu__item { }
+.footer__copyright { }
+```
+
+## Modifier (modificador)
+
+Es un estado o una variación de un block o de un element: por ejemplo, un color distinto, un tamaño distinto, o un estado como "activo" o "deshabilitado".
+
+Se nombra como `block--modificador` o `block__element--modificador` (dos guiones):
+
+```css
+.header--dark { }
+.menu__item--active { }
+.footer__copyright--small { }
+```
+
+## Resumen de la nomenclatura
+
+```text
+.block                    → parte independiente de la interfaz
+.block__element           → parte de un block, no existe por sí sola
+.block--modifier          → variación o estado de un block
+.block__element--modifier → variación o estado de un element
+```
+
+```text
+__  (dos guiones bajos) → separa el block de su element
+--  (dos guiones)       → separa el block/element de su modifier
+```
+
+## Ejemplo
+
+```html
+<div class="card card--featured">
+    <img class="card__image" />
+    <h2 class="card__title">Título</h2>
+    <p class="card__paragraph card__paragraph--muted">Texto</p>
+</div>
+```
+
+```text
+.card                    → el block
+.card--featured          → una variación del block (por ejemplo, destacada)
+.card__image              → un element del block
+.card__title              → otro element del block
+.card__paragraph          → otro element del block
+.card__paragraph--muted   → una variación de ese element (por ejemplo, texto atenuado)
+```
+
+BEM evita depender de la jerarquía del HTML para aplicar estilos (por ejemplo, `.card h2`), y en cambio nombra cada parte de forma explícita. Esto hace que el CSS sea más fácil de reutilizar y de entender, incluso sin ver el HTML.
 
 ---
 
@@ -4260,3 +4535,343 @@ En este ejemplo, `.element` tiene declarada una transición sobre `all`, con una
 En este ejemplo, `.element` usa la animación `mover` (definida con `@keyframes`), que combina desplazamiento, rotación y cambio de color en distintos puntos del recorrido (`0%`, `25%`, `50%`, `75%`, `100%`). Con `animation-direction: alternate`, al llegar al final la animación vuelve sobre sus pasos en vez de saltar de golpe al inicio, y `animation-fill-mode: forwards` mantiene el último estado una vez que se completan las 3 repeticiones (`animation-iteration-count: 3`).
 
 `@keyframes cambiar-color` y `@keyframes crecer` quedan definidas pero sin usarse todavía en ningún selector; se dejan documentadas por si se retoman en una práctica posterior.
+
+---
+
+# Ejemplo práctico: landing page (grid responsive + BEM)
+
+```css
+:root {
+    --White: hsl(0, 100%, 100%);
+    --Grey-500: hsl(0, 0%, 63%);
+    --Grey-800: hsl(0, 0%, 27%);
+    --Black: hsl(0, 0%, 0%);
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "League Spartan", sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+
+.main {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, max-content);
+    grid-template-areas:
+        "main"
+        "buy"
+        "image1"
+        "about"
+        "image2";
+}
+
+.main__hero {
+    min-height: 500px;
+    background-image: url("../images/desktop-image-hero-1.jpg");
+    background-size: cover;
+    background-position: center;
+    grid-area: main;
+}
+
+.main__nav {
+    display: flex;
+}
+
+.main__links {
+    display: none;
+}
+
+.main__logo {
+    margin: 0 auto;
+}
+
+.main__controls {
+    background-color: black;
+    display: flex;
+    width: 100px;
+    height: 50px;
+    justify-content: space-around;
+    align-items: center;
+    align-self: flex-end;
+    justify-self: end;
+}
+
+.main__arrows {
+    height: 40%;
+}
+
+.main__buy {
+    grid-area: buy;
+}
+
+.main__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.main__title {
+    color: var(--Black);
+}
+
+.main__paragraph {
+    line-height: 1.5;
+    margin: 1em 0 2em;
+    color: var(--Grey-500);
+}
+
+.main__paragraph--about {
+    margin: 1em 0 0 0;
+}
+
+.main__cta {
+    text-decoration: none;
+    color: var(--Grey-800);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.main__arrow {
+    margin-left: 20px;
+}
+
+.main__bg {
+    grid-area: image1;
+    min-height: 250px;
+    height: 100%;
+    background-image: url("../images/image-about-dark.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.main__about {
+    grid-area: about;
+}
+
+.main__bg--second {
+    grid-area: image2;
+    background-image: url("../images/image-about-light.jpg");
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 85%;
+        padding: 70px 0;
+    }
+    .main {
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-areas:
+            "main main main main buy buy buy"
+            "main main main main buy buy buy"
+            "main main main main buy buy buy"
+            "image1 image1 about about about image2 image2";
+    }
+    .main__controls {
+        grid-area: buy;
+        justify-self: start;
+    }
+    .main__hamburguer {
+        display: none;
+    }
+    .main__links {
+        padding: 0;
+        display: grid;
+        grid-auto-flow: column;
+        gap: 1em;
+        margin-left: 10%;
+    }
+    .main__list {
+        list-style: none;
+    }
+    .main__link {
+        color: var(--White);
+        text-decoration: none;
+    }
+    .main__logo {
+        margin: 0px;
+    }
+}
+
+.attribution {
+    color: var(--White);
+    background-color: #A16207;
+    width: fit-content;
+    border-radius: 1em;
+    padding: 1em;
+    font-size: 0.5em;
+    position: fixed;
+    z-index: 9999;
+    opacity: 0.85;
+    bottom: 20px;
+    right: 20px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.attribution a {
+    display: inline-block;
+    font-weight: bold;
+    transition: transform 0.2s ease, color 0.2s ease;
+    color: rgb(47, 1, 67);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.attribution a:hover {
+    transform: scale(1.2);
+    color: #1E0A45;
+}
+```
+
+Este ejemplo combina varios temas ya vistos con algunos detalles nuevos:
+
+* **Nomenclatura BEM**: todas las clases siguen el patrón `main__elemento` (`main__hero`, `main__nav`, `main__buy`) y `main__elemento--modificador` (`main__paragraph--about`, `main__bg--second`).
+* **Grid responsive sin duplicar el CSS de cada elemento**: el layout mobile usa una sola columna (`grid-template-columns: 1fr`) y se reordena completo a 7 columnas en el media query de `768px`, solo redefiniendo `grid-template-columns` y `grid-template-areas`. Los elementos (`grid-area: main`, `buy`, `image1`, `about`, `image2`) no cambian.
+* **`grid-auto-flow: column`** en `.main__links`: hace que cada `<li>` del menú ocupe una columna nueva en vez de apilarse en la misma fila.
+* **`justify-self`** en `.main__controls`: alinea ese elemento dentro de su propia celda de grid (a la derecha en mobile, a la izquierda en desktop), sin afectar a los demás elementos del grid.
+* **Tamaños intrínsecos**: `grid-template-rows: repeat(5, max-content)` hace que cada fila mida justo lo que necesita su contenido, y `.attribution` usa `width: fit-content` para ajustarse exactamente al texto que contiene.
+* **`opacity` + `backdrop-filter`** en `.attribution`: el `opacity: 0.85` vuelve translúcido todo el cartel, y `backdrop-filter: blur(6px)` difumina lo que se ve detrás de él (efecto "vidrio esmerilado").
+* **Transición de más de una propiedad a la vez**: `transition: transform 0.2s ease, color 0.2s ease;` anima `transform` y `color` en simultáneo, cada una con su propia duración y curva (separadas por coma, como las sombras múltiples de `box-shadow`).
+
+> Nota: el archivo original tenía dos puntos y coma seguidos al final de la línea de `transition` (`;;`). Es un error de tipeo sin efecto real (CSS lo ignora), pero se corrigió a un solo `;` en la versión devuelta en `landing-page.css`.
+
+---
+
+# Ejemplo práctico: formulario animado (floating label)
+
+```css
+:root {
+    --main-color: #3866f2;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "JetBrains Mono", monospace;
+    background-color: #e5e5f7;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form {
+    background-color: white;
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 4.5em 3em;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px -5px rgb(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.form__title {
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+}
+
+.form__paragraph {
+    font-weight: 300;
+}
+
+.form__link {
+    font-weight: 400;
+    color: black;
+}
+
+.form__container {
+    margin-top: 3em;
+    display: grid;
+    gap: 2.5em;
+}
+
+.form__group {
+    position: relative;
+    --color: #5757577e;
+}
+
+.form__input {
+    width: 100%;
+    background: none;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #706c6c;
+    padding: 0.6em 0.3em;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--color);
+}
+
+.form__input:not(:placeholder-shown) + .form__label,
+.form__input:focus + .form__label {
+    transform: translateY(-12px) scale(0.7);
+    transform-origin: top left;
+    color: var(--main-color);
+}
+
+.form__label {
+    color: var(--color);
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    transform: translateY(10px);
+    transition: transform 0.5s, color 0.3s;
+}
+
+.form__submit {
+    background-color: var(--main-color);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.8em 0;
+    border: none;
+    border-radius: 0.5em;
+}
+
+.form__line {
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    width: 100%;
+    height: 1px;
+    background-color: var(--main-color);
+    transform: scale(0);
+    transform-origin: left bottom;
+    transition: transform 0.4s;
+}
+
+.form__input:not(:placeholder-shown) ~ .form__line,
+.form__input:focus ~ .form__line {
+    transform: scale(1);
+}
+```
+
+Este ejemplo implementa un patrón muy usado en formularios modernos: el **floating label** (etiqueta flotante), donde el texto del campo empieza superpuesto al input y "flota" hacia arriba en cuanto el usuario escribe o hace foco.
+
+* **`:placeholder-shown`** permite detectar si el input está vacío. `:not(:placeholder-shown)` detecta lo contrario: que ya tiene contenido.
+* Combinando `:not(:placeholder-shown)` y `:focus` con el selector de hermano adyacente (`.form__input + .form__label`), la etiqueta sube y se achica tanto si el campo tiene contenido como si está enfocado, aunque esté vacío.
+* `.form__line` usa el selector de hermano **general** (`~`), porque no está pegado inmediatamente después del `input` en el HTML (la etiqueta `.form__label` está en el medio). Por eso no podía usarse `+` para llegar hasta `.form__line`.
+* `transform-origin: top left` en `.form__label` hace que, al achicarse con `scale(0.7)`, la etiqueta se encoja desde su esquina superior izquierda (donde ya está posicionada) y no desde su centro, que la desplazaría de forma extraña.
+* `--color` se declara dentro de `.form__group`, no en `:root`, por lo que su alcance queda limitado a ese grupo y sus hijos (`.form__input`, `.form__label`).
+
+> Nota sobre un posible error a revisar: en el bloque `.form__input:not(:placeholder-shown) ~ .form__line, .form__input:focus ~ .form__line`, el código original repetía las mismas propiedades que la regla de `.form__label` (`translateY(-12px) scale(.7)`, `transform-origin: top left`, `color: var(--main-color)`) y agregaba `transform: scale(1)` al final. Por la cascada, dentro de esa misma regla solo se aplica la última declaración de `transform` (`scale(1)`), por lo que las tres primeras líneas quedaban sin efecto real; en la versión limpia de arriba se dejaron solo las propiedades que realmente hacen falta para animar la línea (`transform: scale(1)`).

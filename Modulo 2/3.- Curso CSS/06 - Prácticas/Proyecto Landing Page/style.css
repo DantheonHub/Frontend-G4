@@ -1,0 +1,20 @@
+/*
+Metodología BEM
+Block Element Modifier
+
+Ofrece una nomenclatura clara y consistente para mantener el código
+flexible, modular y sencillo.
+
+Block: parte independiente en el HTML que no necesita otros elementos
+para funcionar. Su nombre describe lo que representa: header, menu, footer.
+
+Element: parte de un block que no puede existir por sí sola.
+Su nombre describe lo que representa: header__title, menu__item, footer__copyright.
+
+Modifier: estado o variación de un block o element.
+Su nombre describe lo que representa: header--dark, menu__item--active,
+footer__copyright--small.
+
+Es decir, un modifier es un cambio de estilo que se le hace a un block
+o element (por ejemplo, un color diferente, un tamaño diferente, etc.).
+*/
